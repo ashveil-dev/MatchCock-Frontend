@@ -6,10 +6,10 @@ function FloatMenu() {
     const onMobileMenuButtonClick = () => setMobileMenuButtonClicked(b => !b);
     
     return (
-        <nav className="h-full fixed right-5 bottom-5 flex flex-col-reverse justify-start gap-6">
+        <nav className="h-full fixed right-0 bottom-0 flex flex-col-reverse justify-start gap-6">
             <div
                 onClick={onMobileMenuButtonClick}
-                className="w-20 h-20 box-content p-2 aspect-square flex justify-center items-center rounded-2xl shadow-2xl bg-RoyalAmethyst text-white text-2xl font-bold font-Pretendard cursor-pointer">
+                className="w-15 h-15 box-content p-2 flex justify-center items-center rounded-2xl shadow-2xl bg-white opacity-80 text-black text-2xl font-bold  cursor-pointer">
                 메뉴
             </div>
             <div

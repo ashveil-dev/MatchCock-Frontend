@@ -21,13 +21,13 @@ function App() {
             <img src="https://stauter-web-dev.vercel.app/_next/image?url=%2F_next%2Fstatic%2Fmedia%2FImg_main.66654e82.png&w=256&q=100" alt="아이콘" />
           </div>
           <div id="textWrap">
-            <p className="w-2xs md:w-full break-all px-6 md:px-0 text-center md:text-start mb-6 lg:mb-4 font-Pretendard text-xl md:text-3xl leading- font-bold"> 
+            <p className="w-2xs md:w-full break-all px-6 md:px-0 text-center md:text-start mb-6 lg:mb-4  text-xl md:text-3xl leading- font-bold"> 
               <span className="bg-clip-text bg-linear-to-r from-BlushPink to-MysticIndigo text-transparent">
                 배드민턴{' '}
               </span>
               대진표를 원하는대로 만들고 싶다고요?
             </p>
-            <div className="w-2xs md:w-xl break-all mb-4 text-center md:text-start text-sm md:text-base leading-10 font-Pretendard font-light">
+            <div className="w-2xs md:w-xl break-all mb-4 text-center md:text-start text-sm md:text-base leading-10  font-light">
               <p>🏸 경기에서 볼 여러 팀의 <b className="font-bold" >대진표를 모아보기!</b></p>
               <p>❤️ <b className="font-bold" >원하는 클럽</b> 대진표를 한번에 모아놓고 살펴봐요</p>
               <p>
@@ -37,11 +37,11 @@ function App() {
             </div>
           </div>
           <div id="buttonWrap" className="w-full">
-            <button className="w-full  font-Pretendard font-bold text-white bg-RoyalAmethyst py-4 rounded-xl mb-4 leading-6">
+            <button className="w-full   font-bold text-white bg-RoyalAmethyst py-4 rounded-xl mb-4 leading-6">
               지금 바로 시작하기
             </button>
           </div>
-          <div id="detail" className="w-full text-[rgba(0,0,0,.65)] font-Pretendard font-light text-xs">
+          <div id="detail" className="w-full text-[rgba(0,0,0,.65)]  font-light text-xs">
             <table className="w-full border-separate border-spacing border-spacing-4 md:border-spacing-6">
               <tr>
                 <td>사용 API</td>
