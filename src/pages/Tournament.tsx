@@ -4,6 +4,7 @@
 */
 
 import axios from "axios"
+import type { ITournamentData } from "@type/tournament"
 
 import Header from "@common/Header";
 import { useEffect, useRef, useState } from "react";
@@ -21,8 +22,8 @@ const ax = axios.create({
 })
 
 function Tournament() {
-    const [tournamentList, setTournamentList] = useState([])
-    const [tournament, setTournament] = useState(undefined);
+    const [tournamentList, setTournamentList] = useState<ITournamentData[]>([])
+    const [tournament, setTournament] = useState<ITournamentData | undefined>(undefined);
     const optionRef = useRef<HTMLDivElement | null>(null);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [isOptionOutScreen, setIsOptionOutScreen] = useState(false)

@@ -1,7 +1,8 @@
 import { FaUpRightAndDownLeftFromCenter } from "react-icons/fa6";
+import type { ITournamentData } from "@type/tournament"
 
 interface IProps {
-    tournament : any
+    tournament: ITournamentData | undefined
     onDetailClick: () => void
 }
 
@@ -9,6 +10,8 @@ function SummaryTournamentCard({
     tournament,
     onDetailClick
 }: IProps) {
+    if(tournament === undefined) return <div></div>
+
     return (
         <article
             id="tournament-card"

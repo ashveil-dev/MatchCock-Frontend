@@ -1,7 +1,8 @@
 import { FaCompressAlt } from "react-icons/fa";
+import type { ITournamentData } from "@type/tournament";
 
 interface IProps {
-    tournament: any,
+    tournament: ITournamentData | undefined,
     exitModal: () => void
 }
 
@@ -9,7 +10,7 @@ function DetailTournamentCard({
     tournament,
     exitModal
 }: IProps) {
-    if(tournament === undefined) return <div></div>
+    if (tournament === undefined) return <div></div>
 
     return (
         < div id="tournament-card"
@@ -39,7 +40,7 @@ function DetailTournamentCard({
                 <section className="w-full md:w-1/2 bg-white md:overflow-y-scroll">
                     <img
                         alt="포스터"
-                        src={tournament.POSTER}
+                        src={tournament.POSTER ?? undefined}
                         className="w-full object-cover"
                     />
                 </section>
@@ -146,7 +147,7 @@ function DetailTournamentCard({
                         </div>
                     </dl>
                     <div className="flex flex-col gap-3  px-6 py-4 sm:flex-row sm:items-center sm:justify-center grow">
-                        <a href={tournament.TM_OUTLINE_FILE_URL} target="_blank" className="inline-flex items-center justify-center rounded-xl border px-4 py-2 text-sm font-medium text-gray-700 hover:bg-white">
+                        <a href={tournament.TM_OUTLINE_FILE_URL ?? undefined} target="_blank" className="inline-flex items-center justify-center rounded-xl border px-4 py-2 text-sm font-medium text-gray-700 hover:bg-white">
                             안내문 다운로드
                         </a>
                         <a href="#" className="inline-flex items-center justify-center rounded-xl bg-indigo-600 px-4 py-2 text-sm font-semibold text-white hover:bg-indigo-500">
@@ -155,70 +156,6 @@ function DetailTournamentCard({
                     </div>
                 </section>
             </article>
-
-            {/* <div className="px-2 py-4 flex flex-col justify-between cursor-pointer">
-                <img
-                    src={TournamentThumbnail} alt="토너먼트 썸네일"
-                    className="w-full h-full absolute cover top-0 left-0 px-2 py-4 opacity-50 blur-sm -z-10"
-                />
-                <h3 className="text-2xl  font-bold break-keep whitespace-normal leading-9 text-center">
-                    제 8회 중랑구협회장기 <span className="text-nowrap">배드민턴 대회</span>
-                </h3>
-                <div className=" text-sm leading-6 font-medium text-center">
-                    
-                    <p>
-                        <time dateTime="2025-10-17">2025.10.17(금)</time>
-                        ~
-                        <time dateTime="2025-10-31">2025.10월.31(금)</time>
-                        <strong className="text-red-600"> (접수)</strong>
-                    </p>
-                    <p>
-                        <time dateTime="2025-11-08">2025.11.8(토) </time>
-                        ~
-                        <time dateTime="2025-11-09">2025.11.9(일) </time>
-                        <strong className="text-red-600">(진행)</strong>
-                    </p>
-
-                    <p className="mt-5">
-                        <address>묵동다목적체육관</address>
-                        <address>신내다목적체육관</address>
-                    </p>
-                </div>
-                <div className="flex w-full justify-around  font-bold">
-
-                    <button className="shadow-lg p-4 rounded-3xl bg-black text-white  ">
-                        자세히 보기
-                    </button>
-                    <button className=" shadow-lg p-4 rounded-3xl bg-white text-black/70">
-                        사이트 신청하기
-                    </button>
-
-                </div>
-            </div> */}
-            {/* 예정 from-BlushPink to-fuchsia-600
-                        진행 from-RoyalAmethyst to-sky-500
-                        종료 from
-                    
-
-                 <div className="flex items-center justify-between gap-4 bg-linear-to-r from-sky-500 to-RoyalAmethyst px-6 py-5 text-white">
-                        <h2 className="text-lg font-semibold">진행</h2>
-                        <div className="rounded-full flex items-center gap-2 bg-white/20 px-3 py-2 text-sm font-medium tracking-wide">
-                            <span>포스터 보기</span>
-                            <span>
-                                <FaUpRightAndDownLeftFromCenter />
-                            </span>
-                        </div>
-                    </div>
-                    <div className="flex items-center justify-between gap-4 bg-linear-to-r from-blue-700 to-cyan-800 px-6 py-5 text-white">
-                        <h2 className="text-lg font-semibold">마감</h2>
-                        <div className="rounded-full flex items-center gap-2 bg-white/20 px-3 py-2 text-sm font-medium tracking-wide">
-                            <span>포스터 보기</span>
-                            <span>
-                                <FaUpRightAndDownLeftFromCenter />
-                            </span>
-                        </div>
-                    </div> 
-        */}
         </div >
     )
 }
