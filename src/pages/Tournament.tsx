@@ -3,6 +3,8 @@
 * 2. 기본 폰트 Pretendard르 변경하기
 */
 
+import axios from "axios"
+
 import Header from "@common/Header";
 import { useEffect, useRef, useState } from "react";
 import { IoSearch } from "react-icons/io5";
@@ -11,7 +13,16 @@ import Modal from "react-modal";
 import DetailTournamentCard from "@components/Card/DetailTournamentCard"
 import SummaryTournamentCard from "@components/Card/SummaryTournamentCard";
 
+const ax = axios.create({
+    baseURL: "https://sponet.co.kr/php/bm/",
+    headers: {
+        "Content-Type": "application/x-www-form-urlencoded; charset=UTF-8",
+    },
+})
+
 function Tournament() {
+    const [tournamentList, setTournamentList] = useState([])
+    const [tournament, setTournament] = useState(undefined);
     const optionRef = useRef<HTMLDivElement | null>(null);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [isOptionOutScreen, setIsOptionOutScreen] = useState(false)
@@ -34,6 +45,25 @@ function Tournament() {
         }).observe(optionRef.current)
     }, [])
 
+    useEffect(() => {
+        async function fetchTournamentList() {
+            try {
+                const response = await ax.post("mobile_tm_list.php", {
+                    DATA: JSON.stringify({
+                        pageStart: 0,
+                        pageLimit: 10
+                    }),
+                })
+
+                setTournamentList(response.data.data_list)
+            } catch (e) {
+                setTournamentList([]);
+            }
+        }
+
+        fetchTournamentList();
+    }, [])
+
     return (
         <div className="w-full h-dvh flex flex-col pb-8" style={{ overflowY: isModalOpen ? "hidden" : "scroll" }}>
             <Modal
@@ -41,7 +71,7 @@ function Tournament() {
                 className="w-full h-full outline-none flex justify-center items-center p-4 md:p-8"
             >
                 <div className="md:w-4/5 h-full bg-white border border-BlushPink/20 shadow-lg shadow-RoyalAmethyst/60 rounded-3xl flex gap-4 overflow-hidden">
-                    <DetailTournamentCard exitModal={onDetailModalClose} />
+                    <DetailTournamentCard tournament={tournament} exitModal={onDetailModalClose} />
 
                 </div>
             </Modal>
@@ -91,24 +121,19 @@ function Tournament() {
 
                     </div>
                     <article className="w-full flex gap-4 flex-wrap">
-                        <div className="w-80 h-fit grow ">
-                            <SummaryTournamentCard onDetailClick={onDetailModalOpen} />
-                        </div>
-                        <div className="w-80 h-fit grow">
-                            <SummaryTournamentCard onDetailClick={onDetailModalOpen} />
-                        </div>
-                        <div className="w-80 h-fit grow">
-                            <SummaryTournamentCard onDetailClick={onDetailModalOpen} />
-                        </div>
-                        <div className="w-80 h-fit grow">
-                            <SummaryTournamentCard onDetailClick={onDetailModalOpen} />
-                        </div>
-                        <div className="w-80 h-fit grow">
-                            <SummaryTournamentCard onDetailClick={onDetailModalOpen} />
-                        </div>
-                        <div className="w-80 h-fit grow">
-                            <SummaryTournamentCard onDetailClick={onDetailModalOpen} />
-                        </div>
+                        {
+                            tournamentList.length !== 0 && tournamentList.map(t => (
+                                <div key={t.TOURNAMENT_ID}
+                                    className="w-80 h-fit grow"
+                                    onClick={() => setTournament(t)}
+                                >
+                                    <SummaryTournamentCard
+                                        tournament={t}
+                                        onDetailClick={onDetailModalOpen}
+                                    />
+                                </div>
+                            ))
+                        }
                     </article>
                 </div>
             </main>

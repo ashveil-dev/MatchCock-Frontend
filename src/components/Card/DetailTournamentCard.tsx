@@ -1,22 +1,25 @@
-import TournamentThumbnail from "@assets/images/TournamentThumbnail2.jpg"
 import { FaCompressAlt } from "react-icons/fa";
 
 interface IProps {
+    tournament: any,
     exitModal: () => void
 }
 
 function DetailTournamentCard({
+    tournament,
     exitModal
 }: IProps) {
+    if(tournament === undefined) return <div></div>
+
     return (
         < div id="tournament-card"
             className="w-full h-full flex flex-col shadow-lg border border-BlushPink/20 shadow-BlushPink/60"
         >
             <div className="flex flex-col grow-0 shrink-0 justify-between gap-4 bg-linear-to-r from-BlushPink to-fuchsia-600 px-6 py-5 text-white">
                 <div className="flex w-full justify-between items-center">
-                    <span className="text-xl font-bold ">예정</span>
+                    <span className="text-xl font-bold ">{tournament.STAT_NM}</span>
                     <h2 className="text-lg md:text-2xl font-bold hidden md:block">
-                        제 8회 중랑구협회장기 배드민턴 대회
+                        {tournament.TOURNAMENT_NM}
                     </h2>
 
                     <span>
@@ -36,12 +39,12 @@ function DetailTournamentCard({
                 <section className="w-full md:w-1/2 bg-white md:overflow-y-scroll">
                     <img
                         alt="포스터"
-                        src={TournamentThumbnail}
+                        src={tournament.POSTER}
                         className="w-full object-cover"
                     />
                 </section>
-                <section className="w-full md:w-1/2 md:y-full flex flex-col p-6 bg-white rounded-2xl md:overflow-y-scroll">
-                    <dl className="w-full h-full flex flex-col md:max-h-[600px] grow">
+                <section className="w-full md:w-1/2 md:y-full flex flex-col p-6 bg-white rounded-2xl md:overflow-y-scroll shrink-0">
+                    <dl className="w-full h-full flex flex-col md:max-h-[600px] grow shrink-0">
                         <div className="grid grid-cols-1 gap-2 sm:grid-cols-12 sm:gap-6 py-2 grow">
                             <dt className="sm:col-span-3 flex items-start gap-2 text-sm font-medium text-gray-500 mt-px">
                                 <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 flex-none" viewBox="0 0 24 24" fill="currentColor">
@@ -50,7 +53,7 @@ function DetailTournamentCard({
                                 <span className="shrink-0">대회명</span>
                             </dt>
                             <dd className="sm:col-span-9 text-base font-semibold text-gray-900 text-wrap break-keep">
-                                제 8회 중랑구협회장기 배드민턴 대회
+                                {tournament.TOURNAMENT_NM}
                             </dd>
                         </div>
 
@@ -62,8 +65,8 @@ function DetailTournamentCard({
                                 <span className="shrink-0">일시</span>
                             </dt>
                             <dd className="sm:col-span-9 text-gray-900">
-                                <p className="font-medium">2025년 11월 8일(토) ~ 9일(일) <span className="text-gray-500 mt-px">/ 2일간</span></p>
-                                <p className="text-sm text-gray-500 mt-px">일정을 캘린더에 추가하세요.</p>
+                                <p className="font-medium">{tournament.TOUR_DATE}</p>
+                                <p className="text-sm text-gray-500 mt-px">{tournament.ACCEPT_DATE_M}</p>
                             </dd>
                         </div>
 
@@ -76,8 +79,7 @@ function DetailTournamentCard({
                             </dt>
                             <dd className="sm:col-span-9 text-gray-900">
                                 <div className="space-y-1 font-medium flex flex-col">
-                                    <span>묵동다목적체육관</span>
-                                    <span>신내다목적체육관</span>
+                                    <span>{tournament.TOUR_LOCATION}</span>
                                 </div>
                             </dd>
                         </div>
@@ -89,8 +91,7 @@ function DetailTournamentCard({
                                 <span className="shrink-0">개회식</span>
                             </dt>
                             <dd className="sm:col-span-9 text-gray-900">
-                                <p className="font-medium">2025년 11월 8일(토) 11시</p>
-                                <p className="text-sm text-gray-500 mt-px">묵동다목적체육관</p>
+                                <p className="font-medium">{tournament.TOUR_SUPPORT}</p>
                             </dd>
                         </div>
 
@@ -101,7 +102,7 @@ function DetailTournamentCard({
                                 </svg>
                                 <span className="shrink-0">주최</span>
                             </dt>
-                            <dd className="sm:col-span-9 text-gray-900">중랑구 체육회</dd>
+                            <dd className="sm:col-span-9 text-gray-900">{tournament.TOUR_SPONSOR}</dd>
                         </div>
 
                         <div className="grid grid-cols-1 gap-2 sm:grid-cols-12 sm:gap-6 py-2 grow">
@@ -109,9 +110,9 @@ function DetailTournamentCard({
                                 <svg xmlns="http://www.w3.org/2000/svg" className="mt-0.5 h-4 w-4 flex-none" viewBox="0 0 24 24" fill="currentColor">
                                     <path d="M12 12a5 5 0 1 0-5-5 5 5 0 0 0 5 5zm-9 9a9 9 0 0 1 18 0z" />
                                 </svg>
-                                <span className="shrink-0">주관</span>
+                                <span className="shrink-0">담당자</span>
                             </dt>
-                            <dd className="sm:col-span-9 text-gray-900">중랑구배드민턴협회</dd>
+                            <dd className="sm:col-span-9 text-gray-900">{tournament.TOUR_MANAGER}</dd>
                         </div>
 
                         <div className="grid grid-cols-1 gap-2 sm:grid-cols-12 sm:gap-6 py-2 grow">
@@ -122,8 +123,9 @@ function DetailTournamentCard({
                                 <span className="shrink-0">후원</span>
                             </dt>
                             <dd className="sm:col-span-9 text-gray-900">
-                                <span className="mr-2 inline-flex items-center rounded-full bg-gray-100 px-3 py-1 text-sm font-medium text-gray-700">중랑구</span>
-                                <span className="inline-flex items-center rounded-full bg-gray-100 px-3 py-1 text-sm font-medium text-gray-700">서울특별시체육회</span>
+                                <span className="mr-2 inline-flex items-center rounded-full bg-gray-100 px-3 py-1 text-sm font-medium text-gray-700">
+                                    <p className="font-medium">{tournament.TOUR_SUPPORT}</p>
+                                </span>
                             </dd>
                         </div>
 
@@ -144,11 +146,11 @@ function DetailTournamentCard({
                         </div>
                     </dl>
                     <div className="flex flex-col gap-3  px-6 py-4 sm:flex-row sm:items-center sm:justify-center grow">
-                        <a href="#" className="inline-flex items-center justify-center rounded-xl border px-4 py-2 text-sm font-medium text-gray-700 hover:bg-white">
+                        <a href={tournament.TM_OUTLINE_FILE_URL} target="_blank" className="inline-flex items-center justify-center rounded-xl border px-4 py-2 text-sm font-medium text-gray-700 hover:bg-white">
                             안내문 다운로드
                         </a>
                         <a href="#" className="inline-flex items-center justify-center rounded-xl bg-indigo-600 px-4 py-2 text-sm font-semibold text-white hover:bg-indigo-500">
-                            참가 신청하기
+                            대회 선택하기
                         </a>
                     </div>
                 </section>

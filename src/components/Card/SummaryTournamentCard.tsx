@@ -1,10 +1,12 @@
 import { FaUpRightAndDownLeftFromCenter } from "react-icons/fa6";
 
 interface IProps {
+    tournament : any
     onDetailClick: () => void
 }
 
 function SummaryTournamentCard({
+    tournament,
     onDetailClick
 }: IProps) {
     return (
@@ -14,7 +16,7 @@ function SummaryTournamentCard({
         >
             <section>
                 <div className="flex items-center justify-between gap-4 bg-linear-to-r from-BlushPink to-fuchsia-600 px-6 py-5 text-white">
-                    <h2 className="text-xl font-semibold ">예정</h2>
+                    <h2 className="text-xl font-semibold ">{tournament.STAT_NM}</h2>
                     <button
                         onClick={onDetailClick}
                         className="rounded-full flex items-center gap-3 bg-white/20 px-3 py-2 text-sm font-medium tracking-wide cursor-pointer">
@@ -35,7 +37,7 @@ function SummaryTournamentCard({
                             <span className="shrink-0">대회명</span>
                         </dt>
                         <dd className="sm:col-span-9 text-base font-semibold text-gray-900 text-wrap break-keep">
-                            제 8회 중랑구협회장기 배드민턴 대회
+                            {tournament.TOURNAMENT_NM}
                         </dd>
                     </div>
                     <div className="grid grid-cols-1 gap-2 py-4 sm:grid-cols-12 sm:gap-6">
@@ -46,8 +48,8 @@ function SummaryTournamentCard({
                             <span className="shrink-0 text-right">일시</span>
                         </dt>
                         <dd className="sm:col-span-9 text-gray-900">
-                            <p className="text-base font-semibold">2025년 11월 8일(토) ~ 9일(일)</p>
-                            <p className="text-sm text-gray-500 mt-px">2025/10/25 ~ 2025/10/31 (접수)</p>
+                            <p className="text-base font-semibold">{tournament.TOUR_DATE_FROM} ~ {tournament.TOUR_DATE_TO}</p>
+                            <p className="text-sm text-gray-500 mt-px">{tournament.ACCEPT_DATE}</p>
                         </dd>
                     </div>
                     <div className="grid grid-cols-1 gap-2 py-4 sm:grid-cols-12 sm:gap-6">
@@ -58,9 +60,8 @@ function SummaryTournamentCard({
                             <span className="shrink-0">장소</span>
                         </dt>
                         <dd className="sm:col-span-9 text-gray-900">
-                            <div className="font-semibold flex flex-col">
-                                <span>묵동다목적체육관</span>
-                                <span>신내다목적체육관</span>
+                            <div className="font-semibold flex flex-col break-keep">
+                                <span>{tournament.TOUR_LOCATION}</span>
                             </div>
                         </dd>
                     </div>
