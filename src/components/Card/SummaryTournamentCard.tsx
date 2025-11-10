@@ -10,7 +10,7 @@ function SummaryTournamentCard({
     return (
         <article
             id="tournament-card"
-            className="w-full h-full shadow-lg border border-BlushPink/20 shadow-BlushPink/60 overflow-hidden"
+            className="w-full h-full shadow-lg border border-BlushPink/70 shadow-BlushPink/60 rounded-2xl overflow-hidden"
         >
             <section>
                 <div className="flex items-center justify-between gap-4 bg-linear-to-r from-BlushPink to-fuchsia-600 px-6 py-5 text-white">
@@ -47,7 +47,7 @@ function SummaryTournamentCard({
                         </dt>
                         <dd className="sm:col-span-9 text-gray-900">
                             <p className="text-base font-semibold">2025년 11월 8일(토) ~ 9일(일)</p>
-                            <p className="text-sm text-gray-500 mt-px">일정을 캘린더에 추가하세요.</p>
+                            <p className="text-sm text-gray-500 mt-px">2025/10/25 ~ 2025/10/31 (접수)</p>
                         </dd>
                     </div>
                     <div className="grid grid-cols-1 gap-2 py-4 sm:grid-cols-12 sm:gap-6">

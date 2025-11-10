@@ -12,27 +12,36 @@ function DetailTournamentCard({
         < div id="tournament-card"
             className="w-full h-full flex flex-col shadow-lg border border-BlushPink/20 shadow-BlushPink/60"
         >
-            <div className="flex grow-0 shrink-0 items-center justify-between gap-4 bg-linear-to-r from-BlushPink to-fuchsia-600 px-6 py-5 text-white">
-                <h2 className="text-2xl font-bold">[예정] 제 8회 중랑구협회장기 배드민턴 대회 </h2>
-                <button
-                    onClick={exitModal}
-                    className="rounded-full flex items-center gap-2 bg-white/20 px-3 py-2 text-sm font-medium tracking-wide cursor-pointer">
-                    <span>창 닫기</span>
+            <div className="flex flex-col grow-0 shrink-0 justify-between gap-4 bg-linear-to-r from-BlushPink to-fuchsia-600 px-6 py-5 text-white">
+                <div className="flex w-full justify-between items-center">
+                    <span className="text-xl font-bold ">예정</span>
+                    <h2 className="text-lg md:text-2xl font-bold hidden md:block">
+                        제 8회 중랑구협회장기 배드민턴 대회
+                    </h2>
+
                     <span>
-                        <FaCompressAlt />
+                        <button
+                            onClick={exitModal}
+                            className="rounded-full flex items-center gap-2 bg-white/20 px-3 py-2 text-sm font-medium tracking-wide cursor-pointer shrink-0">
+                            <span className="hidden md:block">창 닫기</span>
+                            <span>
+                                <FaCompressAlt />
+                            </span>
+                        </button>
                     </span>
-                </button>
+                </div>
+
             </div>
-            <article className="w-full flex grow overflow-y-scroll bg-gray-100">
-                <section className="w-1/2 bg-white overflow-y-scroll">
+            <article className="w-full flex flex-col md:flex-row grow overflow-y-scroll bg-gray-100 md:p-4 gap-2">
+                <section className="w-full md:w-1/2 bg-white md:overflow-y-scroll">
                     <img
                         alt="포스터"
                         src={TournamentThumbnail}
                         className="w-full object-cover"
                     />
                 </section>
-                <section className="w-1/2 y-full flex flex-col overflow-hidden mx-4 my-6 p-6 bg-white rounded-2xl overflow-y-scroll">
-                    <dl className="w-full h-full flex flex-col max-h-[600px] grow">
+                <section className="w-full md:w-1/2 md:y-full flex flex-col p-6 bg-white rounded-2xl md:overflow-y-scroll">
+                    <dl className="w-full h-full flex flex-col md:max-h-[600px] grow">
                         <div className="grid grid-cols-1 gap-2 sm:grid-cols-12 sm:gap-6 py-2 grow">
                             <dt className="sm:col-span-3 flex items-start gap-2 text-sm font-medium text-gray-500 mt-px">
                                 <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 flex-none" viewBox="0 0 24 24" fill="currentColor">
