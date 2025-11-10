@@ -4,20 +4,20 @@
 */
 
 import Header from "@common/Header";
-import FloatMenu from "@common/FloatMenu";
-import TournamentCard from "@common/TournamentCard";
 import { BsArrowLeftSquare, BsArrowRightSquare } from "react-icons/bs";
 import { useEffect, useRef, useState } from "react";
 import NavigationBar from "@common/NavigationBar";
 import Modal from "react-modal";
-import ScheduledTournamentCard from "@common/TournamentCard_Scheduled"
-import DefaultTournamentCard from "@components/Card/TournamentCard_Default"
-import TournamentThumbnail from "@assets/images/TournamentThumbnail.jpg"
+import DetailTournamentCard from "@components/Card/DetailTournamentCard"
+import SummaryTournamentCard from "@components/Card/SummaryTournamentCard";
 
 function Tournament() {
     const optionRef = useRef<HTMLDivElement | null>(null);
-    const [isModalOpen, setIsModalOpen] = useState(true);
+    const [isModalOpen, setIsModalOpen] = useState(false);
     const [isOptionOutScreen, setIsOptionOutScreen] = useState(false)
+
+    const onDetailModalOpen = () => setIsModalOpen(true);
+    const onDetailModalClose = () => setIsModalOpen(false);
 
     useEffect(() => {
         if (optionRef.current === null)
@@ -35,14 +35,14 @@ function Tournament() {
     }, [])
 
     return (
-        <div className="w-full h-dvh flex flex-col" style={{ overflowY: isModalOpen ? "scroll" : "hidden" }}>
+        <div className="w-full h-dvh flex flex-col" style={{ overflowY: isModalOpen ? "hidden" : "scroll" }}>
             <Modal
                 isOpen={isModalOpen}
                 className="w-full h-full outline-none flex justify-center items-center p-8"
             >
-                <div className="max-w-full max-h-full bg-white border border-BlushPink/20 shadow-lg shadow-RoyalAmethyst/60 rounded-3xl flex gap-4 overflow-scroll">
-                    <DefaultTournamentCard />
-                    
+                <div className="w-full h-full bg-white border border-BlushPink/20 shadow-lg shadow-RoyalAmethyst/60 rounded-3xl flex gap-4 overflow-hidden">
+                    <DetailTournamentCard exitModal={onDetailModalClose}/>
+
                 </div>
             </Modal>
 
@@ -89,22 +89,40 @@ function Tournament() {
                         </div>
 
                     </div>
-
-
-                    <article className="w-full flex gap-4 flex-wrap justify-between">
-                        <div className="w-80 h-fit">
-                            <TournamentCard />
+                    <article className="w-full flex gap-4 flex-wrap">
+                        <div className="w-80 h-fit grow">
+                            <SummaryTournamentCard onDetailClick={onDetailModalOpen}/>
                         </div>
-                        <div className="w-80 h-auto">
-                            <ScheduledTournamentCard />
+                        <div className="w-80 h-fit grow">
+                            <SummaryTournamentCard onDetailClick={onDetailModalOpen}/>
                         </div>
-                        
-
+                        <div className="w-80 h-fit grow">
+                            <SummaryTournamentCard onDetailClick={onDetailModalOpen}/>
+                        </div>
+                        <div className="w-80 h-fit grow">
+                            <SummaryTournamentCard onDetailClick={onDetailModalOpen}/>
+                        </div>
+                        <div className="w-80 h-fit grow">
+                            <SummaryTournamentCard onDetailClick={onDetailModalOpen}/>
+                        </div>
+                        <div className="w-80 h-fit grow">
+                            <SummaryTournamentCard onDetailClick={onDetailModalOpen}/>
+                        </div>
+                        <div className="w-80 h-fit grow">
+                            <SummaryTournamentCard onDetailClick={onDetailModalOpen}/>
+                        </div>
+                        <div className="w-80 h-fit grow">
+                            
+                        </div>
+                        <div className="w-80 h-fit grow">
+                            
+                        </div>
+                        <div className="w-80 h-fit grow">
+                            
+                        </div>
+                       
                     </article>
                 </div>
-
-
-                <FloatMenu />
             </main>
             <footer>
 

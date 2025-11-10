@@ -1,19 +1,22 @@
-import { useState } from "react";
 import { FaUpRightAndDownLeftFromCenter } from "react-icons/fa6";
 
-function TournamentCard() {
-    const [isPosterButtonClicked, setIsPosterButtonClicked] = useState(false);
-    const onPosterClicked = () => setIsPosterButtonClicked(flag => !flag);
+interface IProps {
+    onDetailClick: () => void
+}
+
+function SummaryTournamentCard({
+    onDetailClick
+}: IProps) {
     return (
         <article
             id="tournament-card"
-            className="w-full relative shadow-lg border border-BlushPink/20 shadow-BlushPink/60 transition-transform duration-1000 transform-3d rounded-2xl overflow-hidden"
+            className="w-full h-full shadow-lg border border-BlushPink/20 shadow-BlushPink/60 overflow-hidden"
         >
             <section>
                 <div className="flex items-center justify-between gap-4 bg-linear-to-r from-BlushPink to-fuchsia-600 px-6 py-5 text-white">
                     <h2 className="text-xl font-semibold ">예정</h2>
                     <button
-                        onClick={onPosterClicked}
+                        onClick={onDetailClick}
                         className="rounded-full flex items-center gap-3 bg-white/20 px-3 py-2 text-sm font-medium tracking-wide cursor-pointer">
                         <span>자세히 보기</span>
                         <span>
@@ -68,4 +71,4 @@ function TournamentCard() {
     )
 }
 
-export default TournamentCard;
+export default SummaryTournamentCard
