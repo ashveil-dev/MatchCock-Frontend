@@ -14,6 +14,9 @@ import Modal from "react-modal";
 import DetailTournamentCard from "@components/Card/DetailTournamentCard"
 import SummaryTournamentCard from "@components/Card/SummaryTournamentCard";
 
+import AlignPanel from "@components/Panel/Align"
+import FilterPanel from "@components/Panel/Filter"
+
 const ax = axios.create({
     baseURL: "https://sponet.co.kr/php/bm/",
     headers: {
@@ -22,9 +25,11 @@ const ax = axios.create({
 })
 
 function Tournament() {
-    const [tournamentList, setTournamentList] = useState<ITournamentData[]>([])
     const [tournament, setTournament] = useState<ITournamentData | undefined>(undefined);
+    const [tournamentList, setTournamentList] = useState<ITournamentData[]>([])
     const optionRef = useRef<HTMLDivElement | null>(null);
+    const [isFilterPanelOpen, setIsFilterPanelOpen] = useState(false);
+    const [isAlignPanelOpen, setIsAlignPanelOpen] = useState(false);
     const [isModalOpen, setIsModalOpen] = useState(false);
 
     const onDetailModalOpen = () => setIsModalOpen(true);
@@ -80,13 +85,16 @@ function Tournament() {
                                     <p>찾는 배드민턴 대회가 있으신가요?</p>
                                     <p>검색이나 필터를 통해 더 쉽고 빠르게 찾아보세요!</p>
                                 </div>
-
-                                <div id="option" className="flex w-full md:w-auto mt-4 md:mt-0 justify-center items-center gap-3 mb-2 md:mb-0" ref={optionRef}>
+                                <div id="option" className="flex w-full md:w-auto mt-4 md:mt-0 justify-center items-center gap-3 mb-2 md:mb-0 relative" ref={optionRef}>
                                     <div className="flex items-center">
-                                        <button className="w-10 h-10 cursor-pointer rounded-sm text-xm font-medium text-neutral-500 hover:text-black hover:font-bold">
+                                        <button
+                                            onClick={() => setIsAlignPanelOpen(true)}
+                                            className="w-10 h-10 cursor-pointer rounded-sm text-xm font-medium text-neutral-500 hover:text-black hover:font-bold">
                                             정렬
                                         </button>
-                                        <button className="w-10 h-10 cursor-pointer rounded-sm text-xm font-medium text-neutral-500 hover:text-black hover:font-bold">
+                                        <button
+                                            onClick={() => setIsFilterPanelOpen(true)}
+                                            className="w-10 h-10 cursor-pointer rounded-sm text-xm font-medium text-neutral-500 hover:text-black hover:font-bold">
                                             필터
                                         </button>
                                         <div className="w-40 relative ">
@@ -98,8 +106,11 @@ function Tournament() {
                                                 <IoSearch className="w-6 h-6" />
                                             </button>
                                         </div>
-
                                     </div>
+
+                                    <AlignPanel isOpen={isAlignPanelOpen} onClose={() => setIsAlignPanelOpen(false)} />
+                                    <FilterPanel isOpen={isFilterPanelOpen} onClose={() => setIsFilterPanelOpen(false)} />
+
                                 </div>
                             </div>
                         </div>
@@ -130,3 +141,5 @@ function Tournament() {
 }
 
 export default Tournament;
+
+
