@@ -1,4 +1,5 @@
 import { motion, AnimatePresence } from "motion/react";
+import { useState, type FormEvent } from "react";
 
 interface IProps {
     isOpen: boolean,
@@ -9,8 +10,54 @@ function FilterPanel({
     isOpen,
     onClose,
 }: IProps) {
-    if (!isOpen) {
-        return <></>
+    const [scheduled, setScheduled] = useState(false);
+    const [inProgress, setInProgress] = useState(false);
+    const [completed, setCompleted] = useState(false);
+    const [from, setFrom] = useState("");
+    const [to, setTo] = useState("");
+
+    // if (!isOpen) {
+    //     return <></>
+    // }
+
+    const onReset = () => {
+        setScheduled(false);
+        setInProgress(false);
+        setCompleted(false);
+        setFrom("");
+        setTo("");
+    }
+
+    const onSubmit = (e: FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
+
+        console.log({
+            scheduled,
+            inProgress,
+            completed,
+            from,
+            to
+        })
+    }
+
+    const onScheduledToggle = () => {
+        setScheduled(flag => !flag)
+    }
+
+    const onInProgressToggle = () => {
+        setInProgress(flag => !flag)
+    }
+
+    const onCompletedToggle = () => {
+        setCompleted(flag => !flag)
+    }
+
+    const onFromChange = (e: FormEvent<HTMLInputElement>) => {
+        setFrom(e.currentTarget.value);
+    }
+
+    const onToChange = (e: FormEvent<HTMLInputElement>) => {
+        setTo(e.currentTarget.value)
     }
 
     return (
@@ -20,13 +67,14 @@ function FilterPanel({
                 className="fixed right-0 top-0 w-dvw h-dvh bg-gray-50/70"
             />
             <AnimatePresence>
-                {/* 드로어 패널 */}
-                <motion.div
-                    className="fixed right-0 top-0 h-full w-[80%] max-w-sm bg-white z-50 shadow-2xl rounded-l-2xl flex flex-col"
+                <motion.form
+                    onReset={onReset}
+                    onSubmit={onSubmit}
                     initial={{ x: "100%" }}
                     animate={{ x: 0 }}
                     exit={{ x: "100%" }}
                     transition={{ type: "spring", stiffness: 150, damping: 18 }}
+                    className="fixed right-0 top-0 h-full w-[80%] max-w-sm bg-white z-50 shadow-2xl rounded-l-2xl flex flex-col"
                 >
                     <div className="flex items-center justify-between p-4 border-b border-b-gray-200">
                         <h2 className="text-lg font-semibold">필터</h2>
@@ -37,9 +85,21 @@ function FilterPanel({
                         <div className="border-b border-b-gray-100 pb-6">
                             <h3 className="text-xl font-bold mb-2">상태</h3>
                             <div className="flex gap-2 justify-self-end">
-                                <button className="p-4 py-2 shadow-2xs text-black hover:text-white border border-gray-100/50 cursor-pointer hover:bg-BlushPink rounded-2xl text-sm">예정</button>
-                                <button className="p-4 py-2 shadow-2xs text-black hover:text-white border border-gray-100/50 cursor-pointer hover:bg-blue-300 rounded-2xl text-sm">진행</button>
-                                <button className="p-4 py-2 shadow-2xs text-black hover:text-white border border-gray-100/50 cursor-pointer hover:bg-MysticIndigo rounded-2xl text-sm">종료</button>
+                                {!scheduled ?
+                                    <button type="button" className="p-4 py-2 shadow-2xs text-black hover:text-white border border-gray-100/50 cursor-pointer hover:bg-BlushPink rounded-2xl text-sm" onClick={onScheduledToggle}>예정</button>
+                                    : <button type="button" className="p-4 py-2 shadow-2xs text-white border border-gray-100/50 cursor-pointer bg-BlushPink rounded-2xl text-sm" onClick={onScheduledToggle}>예정</button>
+                                }
+                                {
+                                    !inProgress ?
+                                        <button type="button" className="p-4 py-2 shadow-2xs text-black hover:text-white border border-gray-100/50 cursor-pointer hover:bg-blue-300 rounded-2xl text-sm" onClick={onInProgressToggle}>진행</button>
+                                        : <button type="button" className="p-4 py-2 shadow-2xs text-white border border-gray-100/50 cursor-pointer bg-blue-300 rounded-2xl text-sm" onClick={onInProgressToggle}>진행</button>
+
+                                }
+                                {
+                                    !completed ?
+                                        <button type="button" className="p-4 py-2 shadow-2xs text-black hover:text-white border border-gray-100/50 cursor-pointer hover:bg-MysticIndigo rounded-2xl text-sm" onClick={onCompletedToggle}>종료</button>
+                                        : <button type="button" className="p-4 py-2 shadow-2xs text-white border border-gray-100/50 cursor-pointer bg-MysticIndigo rounded-2xl text-sm" onClick={onCompletedToggle}>종료</button>
+                                }
                             </div>
                         </div>
 
@@ -50,13 +110,21 @@ function FilterPanel({
                                     <div className="grid grid-cols-4 items-center justify-center mb-4">
                                         <span className="col-start-2 col-span-1 text-sx font-semibold">시작</span>
                                         <span className="col-span-2">
-                                            <input type="date" className="bg-white px-4 py-2 rounded-2xl border border-zinc-500/50" />
+                                            <input type="date"
+                                                value={from}
+                                                onChange={onFromChange}
+                                                className="bg-white px-4 py-2 rounded-2xl border border-zinc-500/50"
+                                            />
                                         </span>
                                     </div>
                                     <div className="grid grid-cols-4 items-center">
                                         <span className="col-start-2 col-span-1 text-sx font-semibold">종료</span>
                                         <span className="col-span-2">
-                                            <input type="date" className="bg-white px-4 py-2 rounded-2xl border border-zinc-500/50" />
+                                            <input type="date"
+                                                value={to}
+                                                onChange={onToChange}
+                                                className="bg-white px-4 py-2 rounded-2xl border border-zinc-500/50"
+                                            />
                                         </span>
                                     </div>
                                 </div>
@@ -66,13 +134,15 @@ function FilterPanel({
 
                     {/* 하단 고정 버튼 */}
                     <div className="p-4 border-t flex gap-2">
-                        <button className="flex-1 border rounded-lg py-2 cursor-pointer">초기화</button>
-                        <button className="flex-1 bg-linear-to-r from-pink-500 to-purple-500 
-                                                            text-white rounded-lg py-2 cursor-pointer">
+                        <button type="reset"
+                            className="flex-1 border rounded-lg py-2 cursor-pointer">초기화</button>
+                        <button type="submit"
+                            className="flex-1 bg-linear-to-r from-pink-500 to-purple-500 text-white rounded-lg py-2 cursor-pointer"
+                        >
                             적용하기
                         </button>
                     </div>
-                </motion.div>
+                </motion.form>
             </AnimatePresence>
         </>
     )
