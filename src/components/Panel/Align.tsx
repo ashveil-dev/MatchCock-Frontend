@@ -9,17 +9,24 @@ function AlignPanel({
     isOpen,
     onClose,
 }: IProps) {
+    if (!isOpen) {
+        return <></>
+    }
+
     return (
-        <AnimatePresence>
-            {isOpen && (
-                <>
-                    {/* 드로어 패널 */}
-                    <motion.div
+        <>
+            <div
+                onClick={onClose}
+                className="fixed right-0 top-0 w-dvw h-dvh bg-gray-50/70"
+            />
+            <AnimatePresence>
+                {(
+                    < motion.div
                         className="fixed right-0 top-0 h-full w-[80%] max-w-sm bg-white z-50 shadow-2xl rounded-l-2xl flex flex-col"
                         initial={{ x: "100%" }}
                         animate={{ x: 0 }}
                         exit={{ x: "100%" }}
-                        transition={{ type: "spring", stiffness: 150, damping: 18 }}
+                        transition={{ type: "spring", stiffness: 200, damping: 18 }}
                     >
                         <div className="flex items-center justify-between p-4 border-b">
                             <h2 className="text-lg font-semibold">정렬</h2>
@@ -64,9 +71,9 @@ function AlignPanel({
                             </button>
                         </div>
                     </motion.div>
-                </>
-            )}
-        </AnimatePresence>
+                )}
+            </AnimatePresence >
+        </>
     )
 }
 
