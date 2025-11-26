@@ -10,41 +10,52 @@ function DetailTournamentCard({
     tournament,
     exitModal
 }: IProps) {
-    if (tournament === undefined) return <div></div>
+    if (tournament === undefined) return <></>;
 
     return (
-        < div id="tournament-card"
-            className="w-full h-full flex flex-col shadow-lg border border-BlushPink/20 shadow-BlushPink/60"
-        >
-            <div className="flex flex-col grow-0 shrink-0 justify-between gap-4 bg-linear-to-r from-BlushPink to-fuchsia-600 px-6 py-5 text-white">
+        <div id="tournament-card" className="w-full min-h-full flex flex-col shadow-lg border border-BlushPink/20 shadow-BlushPink/60">
+            <div className="flex flex-col shrink-0 justify-between gap-4 bg-linear-to-r from-BlushPink to-fuchsia-600 px-6 py-5 text-white">
                 <div className="flex w-full justify-between items-center">
-                    <span className="text-xl font-bold ">{tournament.STAT_NM}</span>
-                    <h2 className="text-lg md:text-2xl font-bold hidden md:block">
-                        {tournament.TOURNAMENT_NM}
-                    </h2>
-
-                    <span>
+                    <div className="shrink-0 pr-5">
+                        <span className="text-xl font-bold shrink-0">
+                            {tournament.STAT_NM}
+                        </span>
+                    </div>
+                    <div>
+                        <h2 className="text-lg md:text-2xl font-bold hidden md:block">
+                            {tournament.TOURNAMENT_NM}
+                        </h2>
+                    </div>
+                    <div className="shrink-0">
                         <button
                             onClick={exitModal}
-                            className="rounded-full flex items-center gap-2 bg-white/20 px-3 py-2 text-sm font-medium tracking-wide cursor-pointer shrink-0">
+                            className="rounded-full flex items-center gap-2 bg-white/20 px-3 py-2 text-sm font-medium tracking-wide cursor-pointer">
                             <span className="hidden md:block">창 닫기</span>
                             <span>
                                 <FaCompressAlt />
                             </span>
                         </button>
-                    </span>
+                    </div>
                 </div>
-
             </div>
-            <article className="w-full flex flex-col md:flex-row grow overflow-y-scroll bg-gray-100 md:p-4 gap-2">
-                <section className="w-full md:w-1/2 bg-white md:overflow-y-scroll">
-                    <img
-                        alt="포스터"
-                        src={tournament.POSTER ?? undefined}
-                        className="w-full object-cover"
-                    />
-                </section>
-                <section className="w-full md:w-1/2 md:min-h-full flex flex-col p-6 bg-white rounded-2xl md:overflow-y-scroll shrink-0">
+            <article className="w-full grow flex flex-col xl:flex-row bg-gray-100 md:p-4 gap-2">
+                {(tournament.POSTER !== null || tournament.POSTER2 !== null)
+                    && (
+                        <section className="w-full shrink-0 min-h-full xl:w-1/2 flex flex-col bg-white xl:overflow-y-auto">
+                            {(tournament.POSTER !== null) && <img
+                                alt="포스터"
+                                src={tournament.POSTER ?? undefined}
+                                className="w-full object-cover"
+                            />}
+                            {(tournament.POSTER2 !== null) && <img
+                                alt="포스터"
+                                src={tournament.POSTER2 ?? undefined}
+                                className="w-full object-cover"
+                            />}
+                        </section>
+                    )
+                }
+                <section className="w-full xl:w-1/2 flex flex-col p-6 bg-white rounded-2xl xl:overflow-y-auto shrink-0">
                     <dl className="w-full min-h-full flex flex-col md:max-h-[600px] grow shrink-0">
                         <div className="grid grid-cols-1 gap-2 sm:grid-cols-12 sm:gap-6 py-2 grow">
                             <dt className="sm:col-span-3 flex items-start gap-2 text-sm font-medium text-gray-500 mt-px">

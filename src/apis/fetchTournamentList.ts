@@ -6,7 +6,7 @@ async function fetchTournamentList() : Promise<ITournamentData[] | string> {
         const response = await axios.post("mobile_tm_list.php", {
             DATA: JSON.stringify({
                 pageStart: 0,
-                pageLimit: 10
+                pageLimit: 10000
             }),
         })
 
