@@ -2,12 +2,8 @@ import axios from "axios";
 import fetchTournamentList from "./fetchTournamentList";
 
 const ax = axios.create({
-    baseURL: "https://sponet.co.kr/php/bm/",
-    headers: {
-        "Content-Type": "application/x-www-form-urlencoded; charset=UTF-8",
-    },
+    baseURL: "http://localhost:3000",
 })
-
 
 export {
     fetchTournamentList
