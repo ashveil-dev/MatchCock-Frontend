@@ -4,8 +4,8 @@ import { TbInfinity } from "react-icons/tb";
 import { AiOutlineOrderedList } from "react-icons/ai";
 import { RiScrollToBottomLine, RiScrollToBottomFill } from "react-icons/ri";
 import { AiFillAppstore, AiOutlineAppstore } from "react-icons/ai";
-import { useRef, useState, type FormEvent } from "react";
-import { useQuery } from "@tanstack/react-query"
+import { Fragment, useRef, useState, type FormEvent } from "react";
+import { useInfiniteQuery, useQuery } from "@tanstack/react-query"
 
 import { fetchTournamentList } from "@apis";
 import Header from "@common/Header";
@@ -57,7 +57,7 @@ function Tournament() {
         if (searchText) setSearch(searchText);
     }
 
-    const { data } = useQuery({
+    const { isSuccess: isPageSuccess, data: pageData } = useQuery({
         queryKey: [
             "tournamentList",
             {
@@ -70,7 +70,26 @@ function Tournament() {
             type, pageNumber, cursor,
             search, stateFilter, dateFilter,
             order
-        })
+        }),
+        enabled: type === "page"
+    })
+
+    const { isSuccess: isInfiniteSuccess, data: infiniteData } = useInfiniteQuery({
+        queryKey: [
+            "tournamentList",
+            {
+                type, cursor, search,
+                stateFilter, dateFilter,
+                order
+            }
+        ],
+        queryFn: () => fetchTournamentList({
+            type, cursor, search,
+            stateFilter, dateFilter, order
+        }),
+        initialPageParam: 0,
+        getNextPageParam: (lastPage) => lastPage.nextCursor,
+        enabled: type === "infinite"
     })
 
     return (
@@ -181,17 +200,35 @@ function Tournament() {
                     </div>
                     <article className="w-full flex gap-4 flex-wrap">
                         {
-                            typeof data !== "string" && data?.map(t => (
-                                <div key={t.TOURNAMENT_ID}
+                            (type === "page" && isPageSuccess) && pageData.data?.map(tournament => (
+                                <div key={tournament.TOURNAMENT_ID}
                                     className="w-80 h-fit grow"
-                                    onClick={() => setTournament(t)}
+                                    onClick={() => setTournament(tournament)}
                                 >
                                     <SummaryTournamentCard
-                                        tournament={t}
+                                        tournament={tournament}
                                         onDetailClick={onDetailModalOpen}
                                     />
                                 </div>
                             ))
+                        }
+                        {
+                            (type === "infinite" && isInfiniteSuccess) && infiniteData.pages.map(
+                                (page, i) =>
+                                    <Fragment key={i}>
+                                        {page.data?.map(tournament => (
+                                            <div key={tournament.TOURNAMENT_ID}
+                                                className="w-80 h-fit grow"
+                                                onClick={() => setTournament(tournament)}
+                                            >
+                                                <SummaryTournamentCard
+                                                    tournament={tournament}
+                                                    onDetailClick={onDetailModalOpen}
+                                                />
+                                            </div>
+                                        ))}
+                                    </Fragment>
+                            )
                         }
                     </article>
                 </div>
