@@ -15,11 +15,12 @@ import SummaryTournamentCard from "@components/Card/SummaryTournamentCard";
 import AlignPanel from "@components/Panel/Align"
 import FilterPanel from "@components/Panel/Filter"
 import type { ITournamentData } from "@type/tournament"
+import Pagenation from "@components/Pagenation";
 
 function Tournament() {
     const optionRef = useRef<HTMLDivElement | null>(null);
     const [type, setType] = useState<"page" | "infinite">("page")
-    const [pageNumber,] = useState<number>(1);
+    const [pageNumber, setPageNumber] = useState<number>(1);
     const [cursor,] = useState<number>(0);
     const [search, setSearch] = useState<string>("")
     const [stateFilter,] = useState<string[]>([]);
@@ -46,6 +47,10 @@ function Tournament() {
         if (_type !== type) {
             setType(_type);
         }
+    }
+
+    const pageMove = (_page : number) => () => {
+        setPageNumber(_page);
     }
 
     const onSearchSubmit = (e: FormEvent<HTMLFormElement>) => {
@@ -198,7 +203,7 @@ function Tournament() {
                         </div>
 
                     </div>
-                    <article className="w-full flex gap-4 flex-wrap">
+                    <article className="w-full flex gap-4 flex-wrap py-5">
                         {
                             (type === "page" && isPageSuccess) && pageData.data?.map(tournament => (
                                 <div key={tournament.TOURNAMENT_ID}
@@ -231,6 +236,16 @@ function Tournament() {
                             )
                         }
                     </article>
+                    {(type === "page" && pageData !== undefined && pageData.data?.length !== 0)
+                        && (
+                            <div className="w-full ">
+                                <Pagenation 
+                                    pageNumber={pageNumber}
+                                    lastPageNumber={pageData.lastPage}
+                                    pageMove={pageMove}
+                                />
+                            </div>
+                        )}
                 </div>
             </main>
             <footer>
