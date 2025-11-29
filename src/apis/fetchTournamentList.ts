@@ -31,16 +31,11 @@ async function fetchTournamentList(options: optionsType): Promise<IFetchTourname
         return response.data
     } catch (e) {
         if (e instanceof AxiosError) {
-            return {
-                error: e.message
-            }
+            throw new Error(e.message)
         }
-        
-        return {
-            error : "알 수 없는 에러가 발생했습니다"
-        }
-    }
 
+        throw new Error("알 수 없는 에러가 발생했습니다");
+    }
 }
 
 export default fetchTournamentList;
