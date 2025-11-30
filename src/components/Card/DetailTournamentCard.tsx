@@ -195,7 +195,7 @@ function DetailTournamentCard({
                     </dl>
                     <div className="flex flex-col gap-3  px-6 py-4 sm:flex-row sm:items-center sm:justify-center grow">
                         <a href={tournament.TM_OUTLINE_FILE_URL ?? undefined} target="_blank" className="inline-flex items-center justify-center rounded-xl border px-4 py-2 text-sm font-medium text-gray-700 hover:bg-white">
-                            안내문 다운로드
+                            안내문 보기
                         </a>
                         <a href="#" className="inline-flex items-center justify-center rounded-xl bg-indigo-600 px-4 py-2 text-sm font-semibold text-white hover:bg-indigo-500">
                             대회 선택하기

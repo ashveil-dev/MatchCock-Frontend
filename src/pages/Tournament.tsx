@@ -140,7 +140,7 @@ function Tournament() {
 
             <Header />
             <main className="w-full h-full grow shrink-0 flex flex-col md:items-center">
-                <div id="container" className="w-full min-h-full flex flex-col max-w-6xl px-6 md:px-2 grow">
+                <div id="container" className="w-full max-w-[1700px] min-h-full flex flex-col px-4  grow">
                     <div className="flex flex-col md:flex-row items-center">
                         <div className="w-full">
                             <div className="w-full flex justify-center md:justify-start mb-4">
@@ -232,51 +232,48 @@ function Tournament() {
                         </div>
 
                     </div>
-                    <article className="w-full justify-center items-center md:items-start md:justify-between grow flex gap-4 flex-wrap py-5">
-                        {
-                            ((type === "page" && (isPageLoading)) ||
-                                (type === "infinite") && (isInfiniteLoading))
-                            &&
-                            <div className="w-full h-full flex items-center justify-center">
+                    {
+                        ((type === "page" && (isPageLoading)) || (type === "infinite") && (isInfiniteLoading)) ?
+                            (<div className="w-full h-full flex items-center justify-center grow">
                                 <img alt="loading" src={Spinner} />
-                            </div>
-                        }
+                            </div>) :
+                            (<article className="w-full grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 place-content-center py-5">
+                                {
+                                    type === "page" &&
+                                    pageData?.data?.tournamentList.map(tournament => (
+                                        <div key={tournament.TOURNAMENT_ID}
+                                            className="w-full h-auto "
+                                            onClick={() => setTournament(tournament)}
+                                        >
+                                            <SummaryTournamentCard
+                                                tournament={tournament}
+                                                onDetailClick={onDetailModalOpen}
+                                            />
+                                        </div>
+                                    ))
+                                }
+                                {
+                                    type === "infinite" && infiniteData?.pages.map(
+                                        (page, i) =>
+                                            <Fragment key={i}>
+                                                {page.data?.tournamentList.map(tournament => (
+                                                    <div key={tournament.TOURNAMENT_ID}
+                                                        className="w-full h-auto"
+                                                        onClick={() => setTournament(tournament)}
+                                                    >
+                                                        <SummaryTournamentCard
+                                                            tournament={tournament}
+                                                            onDetailClick={onDetailModalOpen}
+                                                        />
+                                                    </div>
+                                                ))}
 
-                        {
-                            type === "page" &&
-                            pageData?.data?.tournamentList.map(tournament => (
-                                <div key={tournament.TOURNAMENT_ID}
-                                    className="w-full h-auto md:w-80 md:h-90"
-                                    onClick={() => setTournament(tournament)}
-                                >
-                                    <SummaryTournamentCard
-                                        tournament={tournament}
-                                        onDetailClick={onDetailModalOpen}
-                                    />
-                                </div>
-                            ))
-                        }
-                        {
-                            type === "infinite" && infiniteData?.pages.map(
-                                (page, i) =>
-                                    <Fragment key={i}>
-                                        {page.data?.tournamentList.map(tournament => (
-                                            <div key={tournament.TOURNAMENT_ID}
-                                                className="w-full h-auto md:w-80 md:h-90"
-                                                onClick={() => setTournament(tournament)}
-                                            >
-                                                <SummaryTournamentCard
-                                                    tournament={tournament}
-                                                    onDetailClick={onDetailModalOpen}
-                                                />
-                                            </div>
-                                        ))}
+                                            </Fragment>
+                                    )
+                                }
 
-                                    </Fragment>
-                            )
-                        }
-
-                    </article>
+                            </article>)
+                    }
                 </div>
             </main>
             <footer className="">
