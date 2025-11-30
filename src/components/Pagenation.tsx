@@ -29,7 +29,7 @@ export default function Pagenation({
             </div>
             <div id="previousPageGroup" className="flex">
                 {
-                    pageNumber > 1 &&
+                    pageNumber > pageUnit &&
                     <div
                         onClick={pageMove(((Math.floor(pageNumber / (pageUnit + 1)) - 1) * (pageUnit)) + 1)}
                         className="w-5 h-5 p-2 flex items-center justify-center box-content border border-gray-200 text-black rounded-lg cursor-pointer hover:bg-black hover:text-white">
