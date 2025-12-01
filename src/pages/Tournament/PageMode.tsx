@@ -1,4 +1,4 @@
-import { Fragment, useEffect, useRef, useState, type FormEvent } from "react";
+import { useRef, useState, type FormEvent } from "react";
 import clsx from "clsx";
 import Modal from "react-modal";
 import { IoSearch } from "react-icons/io5";
@@ -14,20 +14,13 @@ import SummaryTournamentCard from "@components/Card/SummaryTournamentCard";
 import Spinner from "@assets/images/Spinner.gif"
 import useTournamentQuery from "@hooks/useTournamentQuery";
 import type { ITournamentData } from "@type/tournament"
+import useTournamentStore from "@stores/useTournamentStore";
 
 function PageMode() {
     const optionRef = useRef<HTMLDivElement | null>(null);
-    const [type, setType] = useState<"page" | "infinite">("page")
-    const [pageNumber, setPageNumber] = useState<number>(1);
-    const [search, setSearch] = useState<string>("")
-    const [stateFilter,] = useState<string[]>([]);
-    const [dateFilter,] = useState<{
-        from?: Date,
-        to?: Date
-    } | undefined>({})
-    const [order,] = useState<{
-        [key: string]: "asc" | "desc"
-    }>({})
+    const { type, pageNumber, search, stateFilter, dateFilter, order,
+        setType, setPageNumber, setSearch,
+     } = useTournamentStore();
 
     const [tournament, setTournament] = useState<ITournamentData | undefined>(undefined);
     const [isModalOpen, setIsModalOpen] = useState(false);
@@ -42,9 +35,7 @@ function PageMode() {
     }
 
     const onTypeClicked = (_type: "page" | "infinite") => () => {
-        if (_type !== type) {
-            setType(_type);
-        }
+        setType(_type);
     }
 
     const onSearchSubmit = (e: FormEvent<HTMLFormElement>) => {

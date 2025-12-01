@@ -13,19 +13,13 @@ import SummaryTournamentCard from "@components/Card/SummaryTournamentCard";
 import Spinner from "@assets/images/Spinner.gif"
 import useTournamentInfiniteQuery from "@hooks/useTournamentInfiniteQuery";
 import type { ITournamentData } from "@type/tournament"
+import useTournamentStore from "@stores/useTournamentStore";
 
 export default function InfiniteMode() {
     const optionRef = useRef<HTMLDivElement | null>(null);
-    const [type, setType] = useState<"page" | "infinite">("infinite")
-    const [search, setSearch] = useState<string>("")
-    const [stateFilter,] = useState<string[]>([]);
-    const [dateFilter,] = useState<{
-        from?: Date,
-        to?: Date
-    } | undefined>({})
-    const [order,] = useState<{
-        [key: string]: "asc" | "desc"
-    }>({})
+    const { type, search, stateFilter, dateFilter, order,
+        setType, setSearch,
+    } = useTournamentStore();
 
     const bottomRef = useRef(null);
     const [tournament, setTournament] = useState<ITournamentData | undefined>(undefined);
@@ -37,9 +31,7 @@ export default function InfiniteMode() {
     const onDetailModalClose = () => setIsModalOpen(false);
 
     const onTypeClicked = (_type: "page" | "infinite") => () => {
-        if (_type !== type) {
-            setType(_type);
-        }
+        setType(_type);
     }
 
     const onSearchSubmit = (e: FormEvent<HTMLFormElement>) => {
@@ -183,7 +175,7 @@ export default function InfiniteMode() {
                                     )
                                 }
                             </article>
-                        )
+                            )
                     }
                 </div>
             </main>
