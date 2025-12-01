@@ -1,9 +1,7 @@
 import Modal from "react-modal";
 import { IoSearch } from "react-icons/io5";
 import { TbInfinity } from "react-icons/tb";
-import { AiOutlineOrderedList } from "react-icons/ai";
-import { RiScrollToBottomLine, RiScrollToBottomFill } from "react-icons/ri";
-import { AiFillAppstore, AiOutlineAppstore } from "react-icons/ai";
+import { AiFillAppstore } from "react-icons/ai";
 import { Fragment, useEffect, useMemo, useRef, useState, type FormEvent } from "react";
 import { useInfiniteQuery, useQuery } from "@tanstack/react-query"
 import Spinner from "@assets/images/Spinner.gif"
@@ -18,6 +16,7 @@ import FilterPanel from "@components/Panel/Filter"
 import type { ITournamentData } from "@type/tournament"
 import Pagenation from "@components/Pagenation";
 import clsx from "clsx";
+import useTournamentQuery from "@hooks/useTournamentQuery";
 
 function Tournament() {
     const optionRef = useRef<HTMLDivElement | null>(null);
@@ -31,27 +30,24 @@ function Tournament() {
     } | undefined>({})
     const [order,] = useState<{
         [key: string]: "asc" | "desc"
-    }>({
-
-    })
+    }>({})
 
     const [tournament, setTournament] = useState<ITournamentData | undefined>(undefined);
     const [isModalOpen, setIsModalOpen] = useState(false);
-
     const [isAlignPanelOpen, setIsAlignPanelOpen] = useState(false);
     const [isFilterPanelOpen, setIsFilterPanelOpen] = useState(false);
 
     const onDetailModalOpen = () => setIsModalOpen(true);
     const onDetailModalClose = () => setIsModalOpen(false);
 
+    const pageMove = (_page: number) => () => {
+        setPageNumber(_page);
+    }
+
     const onTypeClicked = (_type: "page" | "infinite") => () => {
         if (_type !== type) {
             setType(_type);
         }
-    }
-
-    const pageMove = (_page: number) => () => {
-        setPageNumber(_page);
     }
 
     const onSearchSubmit = (e: FormEvent<HTMLFormElement>) => {
@@ -63,29 +59,9 @@ function Tournament() {
         if (searchText) setSearch(searchText);
     }
 
-    const stableQueryParams = useMemo(() => ({
-        type, pageNumber,
-        search, stateFilter, dateFilter, order
-    }), [
-        type, pageNumber, search,
-        JSON.stringify(stateFilter),
-        JSON.stringify(dateFilter),
-        JSON.stringify(order),
-    ]);
-
-    const { isLoading: isPageLoading, data: pageData } = useQuery({
-        queryKey: [
-            "tournamentList",
-            stableQueryParams
-        ],
-        queryFn: () => fetchTournamentList({
-            type, pageNumber,
-            search, stateFilter, dateFilter,
-            order
-        }),
-
-        gcTime: 1000 * 60 * 5,
-    })
+    const { isPageLoading, pageData } = useTournamentQuery({
+        type, pageNumber, search, stateFilter, dateFilter, order
+    });
 
     const stableInfiniteQueryParams = useMemo(() => ({
         type, search,
