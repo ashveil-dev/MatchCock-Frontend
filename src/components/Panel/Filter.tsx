@@ -104,8 +104,8 @@ function FilterPanel({
                                 <h3 className="col-span-2 text-xl font-bold">기간</h3>
                                 <div className="col-span-6 ">
                                     <div className="grid grid-cols-4 items-center justify-center mb-4">
-                                        <span className="col-start-2 col-span-1 text-sx font-semibold">시작</span>
-                                        <span className="col-span-2">
+                                        <span className="md:col-start-2 col-span-1 text-sx font-semibold">시작</span>
+                                        <span className="col-span-3 md:col-span-2 flex justify-end">
                                             <input type="date"
                                                 value={from}
                                                 onChange={onFromChange}
@@ -114,8 +114,8 @@ function FilterPanel({
                                         </span>
                                     </div>
                                     <div className="grid grid-cols-4 items-center">
-                                        <span className="col-start-2 col-span-1 text-sx font-semibold">종료</span>
-                                        <span className="col-span-2">
+                                        <span className="md:col-start-2 col-span-1 text-sx font-semibold">종료</span>
+                                        <span className="col-span-3 md:col-span-2 flex justify-end">
                                             <input type="date"
                                                 value={to}
                                                 onChange={onToChange}

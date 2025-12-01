@@ -1,5 +1,6 @@
 import { FaUpRightAndDownLeftFromCenter } from "react-icons/fa6";
 import type { ITournamentData } from "@type/tournament"
+import clsx from "clsx"
 
 interface IProps {
     tournament: ITournamentData | undefined
@@ -10,15 +11,25 @@ function SummaryTournamentCard({
     tournament,
     onDetailClick
 }: IProps) {
-    if(tournament === undefined) return <div></div>
+    if (tournament === undefined) return <div></div>
 
     return (
         <article
             id="tournament-card"
-            className="w-full h-full shadow-lg border border-BlushPink/70 shadow-BlushPink/60 rounded-2xl overflow-hidden"
+            className={clsx("w-full h-full shadow-lg border rounded-2xl overflow-hidden",
+                (tournament.STAT_NM === "신청" || tournament.STAT_NM === "예정") && "border-BlushPink/30 shadow-BlushPink/60",
+                (tournament.STAT_NM === "접수" || tournament.STAT_NM === "진행") && "border-RoyalAmethyst/30 shadow-RoyalAmethyst/60",
+                (tournament.STAT_NM === "완료" && "border-MysticIndigo/30 shadow-MysticIndigo/60")
+            )}
         >
             <section>
-                <div className="flex items-center justify-between gap-4 bg-linear-to-r from-BlushPink to-fuchsia-600 px-6 py-5 text-white">
+                <div className={
+                    clsx(
+                        "flex items-center justify-between gap-4 bg-linear-to-r px-6 py-5 text-white bg-black",
+                        (tournament.STAT_NM === "신청" || tournament.STAT_NM === "예정") && "from-BlushPink to-fuchsia-600",
+                        (tournament.STAT_NM === "접수" || tournament.STAT_NM === "진행") && "from-RoyalAmethyst to-blue-400",
+                        (tournament.STAT_NM === "완료" && "from-MysticIndigo to-violet-400")
+                    )}>
                     <h2 className="text-xl font-semibold ">{tournament.STAT_NM}</h2>
                     <button
                         onClick={onDetailClick}
