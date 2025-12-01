@@ -20,6 +20,7 @@
       "@apis" : ["./apis"],
       "@type/*" : ["./type/*"],
       "@hooks/*" : ["./hooks/*"],
+      "@stores/*" : ["./stores/*"],
       "@assets/*" : ["./assets/*"],
       "@common/*" : ["./common/*"],
       "@pages/*" : ["./pages/*"],
