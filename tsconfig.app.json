@@ -19,6 +19,7 @@
     "paths": {
       "@apis" : ["./apis"],
       "@type/*" : ["./type/*"],
+      "@hooks/*" : ["./hooks/*"],
       "@assets/*" : ["./assets/*"],
       "@common/*" : ["./common/*"],
       "@pages/*" : ["./pages/*"],
