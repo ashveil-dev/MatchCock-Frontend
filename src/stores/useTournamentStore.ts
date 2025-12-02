@@ -10,7 +10,7 @@ type State = {
         to?: Date
     } | undefined,
     order: {
-        [key: string]: "asc" | "desc"
+        [key: string]: string | undefined
     }
 }
 

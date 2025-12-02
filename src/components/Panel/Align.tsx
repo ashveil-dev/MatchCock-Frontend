@@ -1,5 +1,6 @@
+import useTournamentStore from "@stores/useTournamentStore";
 import { motion, AnimatePresence } from "motion/react";
-import { useState, type ChangeEvent, type FormEvent } from "react";
+import { useCallback, useState, type ChangeEvent, type FormEvent } from "react";
 
 interface IProps {
     isOpen: boolean,
@@ -10,6 +11,7 @@ function AlignPanel({
     isOpen,
     onClose,
 }: IProps) {
+    const { setOrder } = useTournamentStore();
     const [nameOrder, setNameOrder] = useState("");
     const [dateOrder, setDateOrder] = useState("");
     const [regOrder, setRegOrder] = useState("");
@@ -32,10 +34,16 @@ function AlignPanel({
         setRegOrder("");
     }
 
-    const onSubmit = (e: FormEvent<HTMLFormElement>) => {
+    const onSubmit = useCallback((e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
+        setOrder({
+            name: nameOrder,
+            date: dateOrder,
+            reg: regOrder
+        })
+
         onClose();
-    }
+    }, [nameOrder, dateOrder, regOrder])
 
     if (!isOpen) {
         return <></>
@@ -67,7 +75,7 @@ function AlignPanel({
                             <div className="grid grid-cols-2 items-center gap-4">
                                 <h3 className="font-medium mb-2">대회명</h3>
                                 <select value={nameOrder} onChange={onNameOrderChange} className="rounded-lg p-2 font-bold">
-                                    <option value="" disabled selected hidden>선택하기</option>
+                                    <option value="">선택하기</option>
                                     <option value="asc">올림차순</option>
                                     <option value="desc">내림차순</option>
                                 </select>
@@ -76,7 +84,7 @@ function AlignPanel({
                             <div className="grid grid-cols-2 items-center gap-4">
                                 <h3 className="font-medium mb-2">대회 일시</h3>
                                 <select value={dateOrder} onChange={onDateOrderChange} className="rounded-lg p-2 font-bold">
-                                    <option value="" disabled selected hidden>선택하기</option>
+                                    <option value="">선택하기</option>
                                     <option value="asc">올림차순</option>
                                     <option value="desc">내림차순</option>
                                 </select>
@@ -85,7 +93,7 @@ function AlignPanel({
                             <div className="grid grid-cols-2 items-center gap-4">
                                 <h3 className="font-medium mb-2">등록일</h3>
                                 <select value={regOrder} onChange={onRegOrderChange} className="rounded-lg p-2 font-bold">
-                                    <option value="" disabled selected hidden>선택하기</option>
+                                    <option value="">선택하기</option>
                                     <option value="asc">올림차순</option>
                                     <option value="desc">내림차순</option>
                                 </select>
