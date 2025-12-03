@@ -53,7 +53,7 @@ function PageMode() {
 
     return (
         <div className={
-            clsx("w-full flex flex-col h-dvh",
+            clsx("w-full flex flex-col min-h-dvh",
                 isModalOpen ? "overflow-y-hidden" : "overflow-y-scroll",
             )}>
             <Modal

@@ -8,11 +8,11 @@ interface IUseTournamentQuery {
     search: string,
     stateFilter: string[],
     dateFilter: {
-        from?: Date,
-        to?: Date
+        from?: string,
+        to?: string
     } | undefined,
     order: {
-        [key: string]: "asc" | "desc"
+        [key: string]: string | undefined
     }
 }
 

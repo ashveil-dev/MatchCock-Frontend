@@ -7,11 +7,11 @@ interface IUseTournamentInfiniteQuery {
     search: string,
     stateFilter: string[],
     dateFilter: {
-        from?: Date,
-        to?: Date
+        from?: string | undefined,
+        to?: string | undefined
     } | undefined,
     order: {
-        [key: string]: "asc" | "desc"
+        [key: string]: string | undefined
     }
 }
 

@@ -23,8 +23,8 @@ function Tournament() {
     const [search, setSearch] = useState<string>("")
     const [stateFilter,] = useState<string[]>([]);
     const [dateFilter,] = useState<{
-        from?: Date,
-        to?: Date
+        from?: string | undefined,
+        to?: string | undefined
     } | undefined>({})
     const [order,] = useState<{
         [key: string]: "asc" | "desc"

@@ -9,11 +9,11 @@ export type optionsType = {
     search?: string | undefined,
     stateFilter?: string[] | undefined,
     dateFilter?: {
-        from?: Date,
-        to?: Date,
+        from?: string,
+        to?: string,
     } | undefined,
     order?: {
-        [key: string]: "asc" | "desc"
+        [key: string]: string | undefined
     } | undefined
 }
 

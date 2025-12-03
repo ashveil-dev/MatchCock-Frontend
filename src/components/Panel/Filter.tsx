@@ -1,7 +1,9 @@
 // 1. 날짜 선택 시 커서 마우스 모양으로 변경하기
 
+import useTournamentStore from "@stores/useTournamentStore";
 import { motion, AnimatePresence } from "motion/react";
 import { useState, type FormEvent } from "react";
+import { dateStringToDate } from "@utils/functions";
 
 interface IProps {
     isOpen: boolean,
@@ -12,11 +14,12 @@ function FilterPanel({
     isOpen,
     onClose,
 }: IProps) {
+    const [from, setFrom] = useState("");
+    const [to, setTo] = useState("");
     const [scheduled, setScheduled] = useState(false);
     const [inProgress, setInProgress] = useState(false);
     const [completed, setCompleted] = useState(false);
-    const [from, setFrom] = useState("");
-    const [to, setTo] = useState("");
+    const { setDateFilter, setStateFilter } = useTournamentStore();
 
     const onReset = () => {
         setScheduled(false);
@@ -28,6 +31,18 @@ function FilterPanel({
 
     const onSubmit = (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
+
+        const stateArray = []
+        if(scheduled) stateArray.push(...["신청", "예정"]);
+        if(inProgress) stateArray.push(...["진행", "접수"]);
+        if(completed) stateArray.push(...["완료", "종료"]);
+
+        setStateFilter(stateArray)
+        setDateFilter({ 
+            from : !from ? undefined : from.split("-").join(""), 
+            to : !to ? undefined : to.split("-").join("")
+        })
+        
         onClose();
     }
 
@@ -44,11 +59,12 @@ function FilterPanel({
     }
 
     const onFromChange = (e: FormEvent<HTMLInputElement>) => {
+        console.log(from)
         setFrom(e.currentTarget.value);
     }
 
     const onToChange = (e: FormEvent<HTMLInputElement>) => {
-        if(from)
+        console.log(to)
         setTo(e.currentTarget.value)
     }
 
