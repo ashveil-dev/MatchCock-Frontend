@@ -1,16 +1,19 @@
 import { useRef, useState } from "react";
 import clsx from "clsx";
-import type { IMatchData } from "@type/tournament"
+import type { CustomTournamentType } from "@type/tournament"
 
 interface IClubCard {
-    club: IMatchData[]
+    club: CustomTournamentType,
+    onSelectTeam: (entryId: string | null) => () => void
 }
 
 export default function ClubCard({
-    club : clubData
+    club,
+    onSelectTeam
 }: IClubCard) {
     const ref = useRef<HTMLDivElement>(null)
     const [isFold, setIsFold] = useState(true);
+
     const onClubCardClick = () => {
         setIsFold(_fold => !_fold)
     }
@@ -23,13 +26,13 @@ export default function ClubCard({
             )}>
             <div className="flex justify-between items-center cursor-pointer mb-4">
                 <div id="left">
-                    <h2 className="text-xl font-bold">{clubData[0].CLUB_NM1}</h2>
+                    <h2 className="text-xl font-bold">{club.name}</h2>
                 </div>
                 <div id="right" className="w-80 flex justify-">
                     <div className="flex grid-cols-3 gap-2">
-                        <span className="bg-RoyalAmethyst col-span-1 text-white rounded-2xl px-3 py-1">Total : {clubData.length}</span>
-                        <span className="bg-FairyBlue  col-span-1 text-white rounded-2xl px-3 py-1">Select : {2}</span>
-                        <span className="bg-BlushPink col-span-1 text-white rounded-2xl px-3 py-1">UnSelect : {3}</span>
+                        <span className="bg-RoyalAmethyst col-span-1 text-white rounded-2xl px-3 py-1">Total : {club.teams?.length ?? 0}</span>
+                        <span className="bg-FairyBlue  col-span-1 text-white rounded-2xl px-3 py-1">Select : {club.teams?.reduce((acc, cur) => acc + (cur.checked ? 1 : 0), 0)}</span>
+                        <span className="bg-BlushPink col-span-1 text-white rounded-2xl px-3 py-1">UnSelect : {club.teams?.reduce((acc, cur) => acc + (cur.checked ? 0 : 1), 0)}</span>
                     </div>
                 </div>
             </div>
@@ -37,15 +40,15 @@ export default function ClubCard({
                 ref={ref}
                 style={{
                     height: !isFold ? ref.current?.scrollHeight : 0,
-                    borderWidth : !isFold ? 1 : 0,
+                    borderWidth: !isFold ? 1 : 0,
                     transition: "height 0.3s ease"
                 }}
                 onClick={(e) => e.stopPropagation()}
                 className={"flex flex-col rounded-xl ease-in-out duration-300 overflow-hidden border border-neutral-200"}
             >
-                <div className="grid grid-cols-5 p-3 cursor-pointer text-center font-semibold border-b-gray-200 bg-RoyalAmethyst/80 text-white">
+                <div className="grid grid-cols-5 p-3 text-center font-semibold border-b-gray-200 bg-RoyalAmethyst/80 text-white">
                     <span className="">
-                        <input type="checkbox" />
+                        <input className="cussor-pointer" type="checkbox" />
                     </span>
                     <span >
                         나이
@@ -60,13 +63,16 @@ export default function ClubCard({
                         출전 선수
                     </span>
                 </div>
-                {clubData.map(team => (
+                {club.teams && club.teams.map(team => (
                     <div
                         key={team.ENTRY_ID}
-                        className="grid grid-cols-5 p-3 hover:bg-neutral-100 cursor-pointer text-center bg-black/70 text-white"
+                        onClick={onSelectTeam(team.ENTRY_ID)}
+                        className={clsx("grid grid-cols-5 p-3 cursor-pointer text-center ",
+                            team.checked ? "bg-black/70 text-white" : "bg-white text-black"
+                        )}
                     >
                         <span>
-                            <input type="checkbox" />
+                            <input className="cusor-pointer" type="checkbox" checked={team.checked ?? false} />
                         </span>
                         <span>
                             {team.AGE}대

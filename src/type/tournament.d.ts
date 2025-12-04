@@ -53,7 +53,7 @@ export interface IMatchData {
     "SEED": string | null,
     "PLAYER_ID": string | null,
     "CLUB_NM1": string | null,
-    "PLAYER_NM1": string | null,,
+    "PLAYER_NM1": string | null,
     "NICK_NM1": null,
     "GENDER1": string | null,
     "PARTNER_ID": string | null,
@@ -70,6 +70,5 @@ export interface IMatchData {
 
 export type CustomTournamentType = {
     name: string,
-    teams?: IMatchData[]
-    checked?: boolean | undefined
+    teams?: (IMatchData & { checked?: boolean })[]
 }

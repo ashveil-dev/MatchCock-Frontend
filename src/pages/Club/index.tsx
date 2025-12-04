@@ -7,13 +7,40 @@ import { IoSearch } from "react-icons/io5";
 import { TbInfinity } from "react-icons/tb";
 import useTournamentStore from "@stores/useTournamentStore";
 import ClubCard from "@components/Card/ClubCard";
+import { useCallback, useEffect, useState } from "react";
+import type { CustomTournamentType } from "@type/tournament";
 
 export default function Club() {
     const { tournamentId } = useTournamentStore();
+    const [tournament, setTournament] = useState<CustomTournamentType[]>([]);
     const { isLoading, isFetching, data } = useQuery({
         queryKey: ["clubList", tournamentId],
         queryFn: () => fetchTournament({ tournamentId })
     })
+
+    useEffect(() => {
+        if (isLoading || isFetching || data === undefined || data.data === undefined || data.data?.tournament === undefined) {
+            return undefined;
+        }
+
+        setTournament(data?.data?.tournament.map(club => ({
+            name: club[0].CLUB_NM1 ? club[0].CLUB_NM1 : "noname",
+            teams: club,
+        })))
+    }, [data, data?.data, setTournament, isLoading, isFetching])
+
+    const onSelectTeam = useCallback((entryId: string | null) => () => {
+        if (entryId === null) return;
+
+        setTournament(_tournament => _tournament.map((t) => ({
+            name: t.name,
+            teams: t.teams?.map(team => ({
+                ...team,
+                checked: entryId === team.ENTRY_ID ? !team.checked : (team.checked ?? false)
+            })),
+        })))
+    }, [setTournament])
+
     return (
         <div className="w-full flex flex-col min-h-dvh">
             <Header />
@@ -82,8 +109,8 @@ export default function Club() {
                         </div>
                     </div>
                     <div id="clubList" className="flex flex-col gap-4">
-                        {data && data.data?.tournament.map(club => (
-                            <ClubCard club={club} />
+                        {tournament !== undefined && tournament?.map(club => (
+                            <ClubCard club={club} onSelectTeam={onSelectTeam} />
                         ))}
 
                     </div>
