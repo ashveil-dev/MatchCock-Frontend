@@ -5,6 +5,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Route, Routes } from "react-router"
 import App from "App";
 import Tournament from '@pages/Tournament/index'
+import Club from "@pages/Club";
 
 const queryClient = new QueryClient();
 
@@ -14,7 +15,8 @@ createRoot(document.getElementById('root')!).render(
       <BrowserRouter>
         <Routes>
           <Route index path="/MatchCock" element={<App />} />
-          <Route path="/MatchCock/tournament" element={<Tournament />} />
+          <Route path="/MatchCock/Tournament" element={<Tournament />} />
+          <Route path="/MatchCock/Club" element={<Club />} />
         </Routes>
       </BrowserRouter>
     </QueryClientProvider>

@@ -28,7 +28,7 @@ function App() {
             </div>
           </div>
           <div id="buttonWrap" className="w-full">
-            <Link to="tournament" className="w-full block text-center font-bold text-white bg-RoyalAmethyst py-4 rounded-xl mb-4 leading-6 cursor-pointer">
+            <Link to="Tournament" className="w-full block text-center font-bold text-white bg-RoyalAmethyst py-4 rounded-xl mb-4 leading-6 cursor-pointer">
               지금 바로 시작하기
             </Link>
           </div>

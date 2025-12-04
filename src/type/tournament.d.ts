@@ -42,3 +42,30 @@ export interface ITournamentData {
     "TM_OUTLINE_FILE_URL": null | string, //"https:\/\/sponet.co.kr\/mobile\/tm_outline\/2025 \uc81c2\ud68c \ub8e8\ud0a4 \uc804\uad6d \ubc30\ub4dc\ubbfc\ud134 \ub9ac\ubc84\uc2a4\ucef5 \ucc38\uac00\uc694\uac15.pdf",
     "IS_APPLY_SPONET": null | string, //null
 }
+
+export interface IMatchData {
+
+    "EVENT_ID": "242",
+    "EVENT_NM": "혼복-50-A",
+    "GENDER": "A",
+    "AGE": "50",
+    "GRADE": "A",
+    "ENTRY_ID": "00000246",
+    "SEED": "0",
+    "PLAYER_ID": "BM_202511301605080491",
+    "CLUB_NM1": "1989",
+    "PLAYER_NM1": "박정근",
+    "NICK_NM1": null,
+    "GENDER1": "M",
+    "PARTNER_ID": "BM_202511301605080492",
+    "CLUB_NM2": "1989",
+    "PLAYER_NM2": "이정순",
+    "NICK_NM2": null,
+    "GENDER2": "F",
+    "REG_DATE": "2025-11-30 16:05:08",
+    "CHG_DATE": "2025-11-30 16:05:08",
+    "POINT_YN": "Y",
+    "ADVANTAGE": "0",
+    "MATCH_OPEN_YN": "N"
+
+}

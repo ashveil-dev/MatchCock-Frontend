@@ -1,10 +1,12 @@
 import { FaCompressAlt } from "react-icons/fa";
 import type { ITournamentData } from "@type/tournament";
+import { useNavigate } from "react-router";
 import Slider from "react-slick"
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 
 import clsx from "clsx"
+import useTournamentStore from "@stores/useTournamentStore";
 
 interface IProps {
     tournament: ITournamentData | undefined,
@@ -16,14 +18,18 @@ function DetailTournamentCard({
     exitModal
 }: IProps) {
     if (tournament === undefined) return <></>;
-    var settings = {
-        dots: true,
-        infinite: true,
-        speed: 500,
-        slidesToShow: 1,
-        slidesToScroll: 1,
-        
-    };
+    const { setTournamentId } = useTournamentStore()
+    const navigate = useNavigate();
+
+    const onSelectButtonClicked = () => {
+        if(tournament.TOURNAMENT_ID === null) {
+            alert("올바르지 않은 대회 설정입니다.")
+        } else {
+            setTournamentId(tournament.TOURNAMENT_ID);
+            navigate("/MatchCock/Club")
+        }
+        exitModal();
+    }
 
     return (
         <div id="tournament-card" className="w-full max-h-full flex flex-col shadow-lg">
@@ -61,13 +67,17 @@ function DetailTournamentCard({
                 {(tournament.POSTER !== null || tournament.POSTER2 !== null)
                     && (
                         <section className="w-full h-full px-8 py-8 xl:w-1/2 bg-white rounded-2xl">
-                            <Slider 
-                                {...settings}
-                                className="w-full h-full" 
+                            <Slider
+                                dots
+                                infinite
+                                speed={500}
+                                slidesToShow={1}
+                                slidesToScroll={1}
+                                className="w-full h-full"
                             >
                                 {(tournament.POSTER !== null) &&
                                     <div className="w-full h-full" onDoubleClick={() => {
-                                        
+
                                     }}>
                                         <img
                                             alt="포스터"
@@ -224,9 +234,11 @@ function DetailTournamentCard({
                         <a href={tournament.TM_OUTLINE_FILE_URL ?? undefined} target="_blank" className="inline-flex items-center justify-center rounded-xl border px-4 py-2 text-sm font-medium text-gray-700 hover:bg-white">
                             안내문 보기
                         </a>
-                        <a href="#" className="inline-flex items-center justify-center rounded-xl bg-indigo-600 px-4 py-2 text-sm font-semibold text-white hover:bg-indigo-500">
+                        <button 
+                            onClick={onSelectButtonClicked}
+                            className="inline-flex items-center justify-center rounded-xl bg-indigo-600 px-4 py-2 text-sm font-semibold text-white hover:bg-indigo-500">
                             대회 선택하기
-                        </a>
+                        </button>
                     </div>
                 </section>
             </article>

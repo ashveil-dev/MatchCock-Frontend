@@ -1,4 +1,5 @@
 import axios from "axios";
+import fetchTournament from "./fetchTournament";
 import fetchTournamentList from "./fetchTournamentList";
 
 const ax = axios.create({
@@ -6,6 +7,7 @@ const ax = axios.create({
 })
 
 export {
+    fetchTournament,
     fetchTournamentList
 };
 
