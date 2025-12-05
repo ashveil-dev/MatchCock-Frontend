@@ -16,16 +16,34 @@ import useTournamentQuery from "@hooks/useTournamentQuery";
 import type { ITournamentData } from "@type/tournament"
 import useTournamentStore from "@stores/useTournamentStore";
 
-function PageMode() {
-    const optionRef = useRef<HTMLDivElement | null>(null);
-    const { type, pageNumber, search, stateFilter, dateFilter, order,
-        setType, setPageNumber, setSearch,
-     } = useTournamentStore();
+export type dateFilterType = {
+    from?: string | undefined,
+    to?: string | undefined
+}
 
-    const [tournament, setTournament] = useState<ITournamentData | undefined>(undefined);
+export type orderType = {
+    [key: string]: string | undefined
+}
+
+interface IPageMode {
+    type: "page" | "infinite"
+    setType: (_type: "page" | "infinite") => void
+}
+function PageMode({
+    type,
+    setType
+}: IPageMode) {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [isAlignPanelOpen, setIsAlignPanelOpen] = useState(false);
     const [isFilterPanelOpen, setIsFilterPanelOpen] = useState(false);
+    const [order, setOrder] = useState<orderType>({})
+    const [search, setSearch] = useState<string>("")
+    const [pageNumber, setPageNumber] = useState<number>(1)
+    const [stateFilter, setStateFilter] = useState<string[]>([])
+    const [dateFilter, setDateFilter] = useState<dateFilterType>({})
+    const [tournament, setTournament] = useState<ITournamentData | undefined>(undefined);
+
+    const optionRef = useRef<HTMLDivElement | null>(null);
 
     const onDetailModalOpen = () => setIsModalOpen(true);
     const onDetailModalClose = () => setIsModalOpen(false);
@@ -129,8 +147,11 @@ function PageMode() {
                                                     <IoSearch className="w-6 h-6" />
                                                 </button>
                                             </form>
-                                            <AlignPanel isOpen={isAlignPanelOpen} onClose={() => setIsAlignPanelOpen(false)} />
-                                            <FilterPanel isOpen={isFilterPanelOpen} onClose={() => setIsFilterPanelOpen(false)} />
+                                            <AlignPanel isOpen={isAlignPanelOpen} setOrder={setOrder} onClose={() => setIsAlignPanelOpen(false)} />
+                                            <FilterPanel isOpen={isFilterPanelOpen} onClose={() => setIsFilterPanelOpen(false)}
+                                                setDateFilter={setDateFilter}
+                                                setStateFilter={setStateFilter}
+                                            />
                                         </div>
 
                                     </div>

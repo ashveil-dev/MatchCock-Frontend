@@ -1,9 +1,11 @@
 import PageMode from "./PageMode"
 import InfiniteMode from "./InfiniteMode"
-import useTournamentStore from "@stores/useTournamentStore"
+import { useState } from "react";
 
 export default function Tournament() {
-    const { type } = useTournamentStore();
+    const [type, setType] = useState<"page" | "infinite">("page");
 
-    return type === "page" ? <PageMode /> : <InfiniteMode />
+    return type === "page"
+        ? <PageMode type={type} setType={setType} />
+        : <InfiniteMode type={type} setType={setType} />
 }
