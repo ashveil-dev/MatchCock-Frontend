@@ -1,5 +1,6 @@
+import clsx from "clsx";
 import { motion, AnimatePresence } from "motion/react";
-import type { FormEvent } from "react";
+import { useState, type FormEvent } from "react";
 
 interface IProps {
     isOpen: boolean,
@@ -10,9 +11,18 @@ function FilterPanel({
     isOpen,
     onClose,
 }: IProps) {
-
+    const [selected, setSelected] = useState(false);
+    const [unSelected, setUnSelected] = useState(false);
     const onReset = () => {
 
+    }
+
+    const onClickSelectedButton = () => {
+        setSelected(s => !s);
+    }
+
+    const onClickUnSelectedButton = () => {
+        setUnSelected(u => !u)
     }
 
     const onSubmit = (e: FormEvent<HTMLFormElement>) => {
@@ -48,9 +58,19 @@ function FilterPanel({
 
                     <div className="p-4 space-y-5 overflow-y-auto grow ">
                         <div className="border-b border-b-gray-100 pb-6">
-                            <h3 className="text-xl font-bold mb-2">범위</h3>
-                            <div className="flex ">
-                                1 ~100
+                            <h3 className="text-xl font-bold mb-2">선택</h3>
+                            <div className="flex justify-end gap-2">
+                                <button type="button"
+                                    className={clsx("p-4 py-2 shadow-2xs text-black hover:text-white border border-gray-100/50 cursor-pointer rounded-2xl text-sm",
+                                        !selected ? "text-black hover:text-white hover:bg-FairyBlue" : "text-white bg-FairyBlue"
+                                    )}
+                                    onClick={onClickSelectedButton}>선택</button>
+                                <button type="button"
+                                    className={clsx("p-4 py-2 shadow-2xs text-black hover:text-white border border-gray-100/50 cursor-pointer rounded-2xl text-sm",
+                                        !unSelected ? "text-black hover:text-white hover:bg-BlushPink" : "text-white bg-BlushPink"
+                                    )}
+                                    onClick={onClickUnSelectedButton}>미선택</button>
+
                             </div>
                         </div>
 
