@@ -23,8 +23,8 @@ interface IProps {
     }
 }
 
-const groupNameArray = ["A조", "B조", "C조", "D조", "초심", "준자강", "자강"]
-const matchNameArray = ["남자복식", "여자복식", "혼합복식"]
+const groupNameArray = ["A", "B", "C", "D", "E"]
+const matchNameArray = ["A", "M", "F"]
 
 function FilterPanel({
     isOpen,
@@ -168,7 +168,7 @@ function FilterPanel({
                                             className={clsx("p-4 py-2 shadow-2xs text-black hover:text-white border border-gray-100/50 cursor-pointer rounded-2xl text-sm",
                                                 !group.includes(_group) ? "text-black hover:text-white hover:bg-fuchsia-300" : "text-white bg-fuchsia-300"
                                             )}
-                                            onClick={onGroupClick}>{_group}</button>
+                                            onClick={onGroupClick}>{_group}조</button>
                                     ))
                                 }
                             </div>
@@ -185,7 +185,10 @@ function FilterPanel({
                                             className={clsx("p-4 py-2 shadow-2xs text-black hover:text-white border border-gray-100/50 cursor-pointer rounded-2xl text-sm",
                                                 !matchName.includes(_matchName) ? "text-black hover:text-white hover:bg-emerald-300" : "text-white bg-emerald-300"
                                             )}
-                                            onClick={onMatchNameClick}>{_matchName}</button>
+                                            onClick={onMatchNameClick}>
+                                            {_matchName === "A" ? "혼성" :
+                                                _matchName === "M" ? "남자" : "여자"
+                                            }복식</button>
                                     ))
                                 }
                             </div>
