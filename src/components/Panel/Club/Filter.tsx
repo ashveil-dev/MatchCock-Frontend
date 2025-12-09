@@ -19,8 +19,13 @@ function FilterPanel({
     const [age, setAge] = useState<number[]>([]);
     const [group, setGroup] = useState<string[]>([]);
     const [matchName, setMatchName] = useState<string[]>([]);
-    const onReset = () => {
 
+    const onReset = () => {
+        setSelected(false);
+        setUnSelected(false);
+        setAge([]);
+        setGroup([]);
+        setMatchName([]);
     }
 
     const onClickSelectedButton = () => {
