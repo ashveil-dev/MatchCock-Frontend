@@ -4,14 +4,20 @@ import { useCallback, useState, type ChangeEvent, type FormEvent } from "react";
 
 interface IProps {
     isOpen: boolean,
+    setAlignOption : (_alignOption : AlignOptionType) => void
     onClose: () => void
+}
+
+export type AlignOptionType = {
+    name : string,
+    total : string,
 }
 
 function AlignPanel({
     isOpen,
+    setAlignOption,
     onClose,
 }: IProps) {
-    const { setClubOrder } = useTournamentStore();
     const [nameOrder, setNameOrder] = useState("");
     const [totalOrder, setTotalOrder] = useState("");
     const [selectOrder, setSelectOrder] = useState("");
@@ -32,14 +38,17 @@ function AlignPanel({
         setNameOrder("");
         setTotalOrder("");
         setSelectOrder("");
+        setAlignOption({
+            name : "",
+            total : "",
+        })
     }
 
     const onSubmit = useCallback((e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        setClubOrder({
+        setAlignOption({
             name: nameOrder,
             total: totalOrder,
-            select: selectOrder
         })
 
         onClose();
@@ -84,15 +93,6 @@ function AlignPanel({
                             <div className="grid grid-cols-2 items-center gap-4">
                                 <h3 className="font-medium mb-2">팀 총원</h3>
                                 <select value={totalOrder} onChange={onTotalOrderChange} className="rounded-lg p-2 font-bold">
-                                    <option value="">선택하기</option>
-                                    <option value="asc">올림차순</option>
-                                    <option value="desc">내림차순</option>
-                                </select>
-                            </div>
-
-                            <div className="grid grid-cols-2 items-center gap-4">
-                                <h3 className="font-medium mb-2">선택순</h3>
-                                <select value={selectOrder} onChange={onSelectOrderChange} className="rounded-lg p-2 font-bold">
                                     <option value="">선택하기</option>
                                     <option value="asc">올림차순</option>
                                     <option value="desc">내림차순</option>

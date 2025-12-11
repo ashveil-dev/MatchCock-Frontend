@@ -9,13 +9,17 @@ import useTournamentStore from "@stores/useTournamentStore";
 import ClubCard from "@components/Card/ClubCard";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import type { CustomTournamentType } from "@type/tournament";
-import AlignPanel from "@components/Panel/Club/Align";
+import AlignPanel, { type AlignOptionType } from "@components/Panel/Club/Align";
 import FilterPanel from "@components/Panel/Club/Filter";
 import type { FilterOptionType } from "@components/Panel/Club/Filter"
 import clsx from "clsx";
 
 export default function Club() {
     const { tournamentId } = useTournamentStore();
+    const [alignOption, setAlignOption] = useState<AlignOptionType>({
+        name: "",
+        total: "",
+    })
     const [filterOption, setFilterOption] = useState<FilterOptionType>({
         selected: false,
         unSelected: false,
@@ -38,29 +42,45 @@ export default function Club() {
         [filterOption.selected, filterOption.unSelected, filterOption.age, filterOption.group, filterOption.matchName]
     )
 
-    const filterTournament = useMemo(() => {
-        return tournament.flatMap(
-            club => {
-                const filteredTeams = club.teams?.filter(team => {
-                    if (filterOption.selected && !team.checked) return false;
-                    if (filterOption.unSelected && !!team.checked) return false;
-                    if (filterOption.age.length > 0 && !filterOption.age.some(_age => (team.AGE && team.AGE?.indexOf(_age.toString()) >= 0))) return false;
-                    if (filterOption.group.length > 0 && team.GRADE && !filterOption.group.includes(team.GRADE)) return false;
-                    if (filterOption.matchName.length > 0 && team.GENDER && !filterOption.matchName.includes(team.GENDER)) return false;
-                    return true;
-                })
+    const isSorting = useMemo(() => alignOption.name !== "" || alignOption.total !== "", [alignOption.name, alignOption.total])
 
-                if (filteredTeams && filteredTeams.length > 0)
-                    return ({
-                        name: club.name,
-                        isFold: club.isFold,
-                        teams: filteredTeams
+    const filterAndAlignTournament = useMemo(() =>
+        tournament
+            .flatMap(
+                club => {
+                    const filteredTeams = club.teams?.filter(team => {
+                        if (filterOption.selected && !team.checked) return false;
+                        if (filterOption.unSelected && !!team.checked) return false;
+                        if (filterOption.age.length > 0 && !filterOption.age.some(_age => (team.AGE && team.AGE?.indexOf(_age.toString()) >= 0))) return false;
+                        if (filterOption.group.length > 0 && team.GRADE && !filterOption.group.includes(team.GRADE)) return false;
+                        if (filterOption.matchName.length > 0 && team.GENDER && !filterOption.matchName.includes(team.GENDER)) return false;
+                        return true;
                     })
 
-                return []
-            }
-        )
-    }, [data, tournament, isFiltering, filterOption.selected, filterOption.unSelected, filterOption.age, filterOption.group, filterOption.matchName])
+                    if (filteredTeams && filteredTeams.length > 0)
+                        return ({
+                            name: club.name,
+                            isFold: club.isFold,
+                            teams: filteredTeams
+                        })
+
+                    return []
+                })
+            .sort((a, b) => {
+                if (alignOption.name !== "") {
+                    return (alignOption.name === "asc" ? 1 : -1) * a.name.localeCompare(b.name)
+                }
+
+                if (alignOption.total !== "") {
+                    return (alignOption.total === "asc" ? 1 : -1) * (a.teams.length - b.teams.length)
+                }
+
+                return 0;
+            })
+        , [data, tournament, isFiltering, isSorting,
+            filterOption.selected, filterOption.unSelected, filterOption.age, filterOption.group, filterOption.matchName,
+            alignOption.name, alignOption.total
+        ])
 
     useEffect(() => {
         if (isLoading || isFetching || data === undefined || data.data === undefined || data.data?.tournament === undefined) {
@@ -81,7 +101,7 @@ export default function Club() {
 
         setTournament(_tournament => _tournament.map((t) => ({
             name: t.name,
-            isFold : t.isFold,
+            isFold: t.isFold,
             teams: t.teams?.map(team => ({
                 ...team,
                 checked: entryId === team.ENTRY_ID ? !team.checked : (team.checked ?? false)
@@ -195,7 +215,8 @@ export default function Club() {
                                                 </button>
                                             </form>
                                         </div>
-                                        <AlignPanel isOpen={isAlignPanelOpen} onClose={() => setIsAlignPanelOpen(false)} />
+                                        <AlignPanel setAlignOption={setAlignOption}
+                                            isOpen={isAlignPanelOpen} onClose={() => setIsAlignPanelOpen(false)} />
                                         <FilterPanel filterOption={filterOption} setFilterOption={setFilterOption}
                                             isOpen={isFilterPanelOpen} onClose={() => setIsFilterPanelOpen(false)} />
                                     </div>
@@ -205,12 +226,9 @@ export default function Club() {
                     </div>
                     <div id="clubList" className="flex flex-col gap-4">
                         {
-                            isFiltering
-                                ? filterTournament.map(club => (
-                                    <ClubCard club={club} isFold={!!club.isFold} onFold={onFold(club.name)} onSelectTeam={onSelectTeam} />
-                                )) : tournament.map(club => (
-                                    <ClubCard club={club} isFold={!!club.isFold} onFold={onFold(club.name)} onSelectTeam={onSelectTeam} />
-                                ))
+                            filterAndAlignTournament.map(club => (
+                                <ClubCard club={club} isFold={!!club.isFold} onFold={onFold(club.name)} onSelectTeam={onSelectTeam} />
+                            ))
                         }
 
                     </div>
