@@ -3,24 +3,23 @@ import clsx from "clsx";
 import type { CustomTournamentType } from "@type/tournament"
 
 interface IClubCard {
+    isFold : boolean,
     club: CustomTournamentType,
+    onFold :() => void,
     onSelectTeam: (entryId: string | null) => () => void
 }
 
 export default function ClubCard({
     club,
+    isFold,
+    onFold,
     onSelectTeam
 }: IClubCard) {
     const ref = useRef<HTMLDivElement>(null)
-    const [isFold, setIsFold] = useState(true);
-
-    const onClubCardClick = () => {
-        setIsFold(_fold => !_fold)
-    }
 
     return (
         <div
-            onClick={onClubCardClick}
+            onClick={onFold}
             className={clsx("max-w-dvw overflow-hidden border border-neutral-200 rounded-2xl px-4 shadow-sm hover:shadow-md transition-all ease-in duration-200",
                 !isFold ? "py-4" : "pt-4 pb-0"
             )}>

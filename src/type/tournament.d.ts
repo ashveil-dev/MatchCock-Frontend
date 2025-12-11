@@ -71,4 +71,5 @@ export interface IMatchData {
 export type CustomTournamentType = {
     name: string,
     teams?: (IMatchData & { checked?: boolean })[]
+    isFold? : boolean,
 }

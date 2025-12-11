@@ -12,6 +12,7 @@ import type { CustomTournamentType } from "@type/tournament";
 import AlignPanel from "@components/Panel/Club/Align";
 import FilterPanel from "@components/Panel/Club/Filter";
 import type { FilterOptionType } from "@components/Panel/Club/Filter"
+import clsx from "clsx";
 
 export default function Club() {
     const { tournamentId } = useTournamentStore();
@@ -22,6 +23,8 @@ export default function Club() {
         group: [],
         matchName: []
     });
+    const [foldAll, setFoldAll] = useState(true);
+    const [expandAll, setExPandAll] = useState(false);
     const [isAlignPanelOpen, setIsAlignPanelOpen] = useState(false);
     const [isFilterPanelOpen, setIsFilterPanelOpen] = useState(false);
     const [tournament, setTournament] = useState<CustomTournamentType[]>([]);
@@ -50,6 +53,7 @@ export default function Club() {
                 if (filteredTeams && filteredTeams.length > 0)
                     return ({
                         name: club.name,
+                        isFold: club.isFold,
                         teams: filteredTeams
                     })
 
@@ -65,6 +69,7 @@ export default function Club() {
 
         setTournament(data?.data?.tournament.map(club => ({
             name: club[0].CLUB_NM1 ? club[0].CLUB_NM1 : "noname",
+            isFold: true,
             teams: club,
         })))
     }, [data, data?.data, setTournament, isLoading, isFetching])
@@ -76,12 +81,49 @@ export default function Club() {
 
         setTournament(_tournament => _tournament.map((t) => ({
             name: t.name,
+            isFold : t.isFold,
             teams: t.teams?.map(team => ({
                 ...team,
                 checked: entryId === team.ENTRY_ID ? !team.checked : (team.checked ?? false)
             })),
         })))
     }, [setTournament])
+
+    const onFold = (name: string) => () => {
+        setFoldAll(false);
+        setExPandAll(false)
+        setTournament(_tournament =>
+            _tournament.map(club => ({
+                name: club.name,
+                isFold: club.name === name ? !club.isFold : !!club.isFold,
+                teams: club.teams
+            }))
+        )
+    }
+
+    const onFoldAllButtonClicked = () => {
+        setFoldAll(f => !f);
+        setExPandAll(false);
+        setTournament(_tournament =>
+            _tournament.map(club => ({
+                name: club.name,
+                isFold: true,
+                teams: club.teams
+            }))
+        )
+    }
+
+    const onExpandAllButtonClicked = () => {
+        setExPandAll(e => !e)
+        setFoldAll(false)
+        setTournament(_tournament =>
+            _tournament.map(club => ({
+                name: club.name,
+                isFold: false,
+                teams: club.teams
+            }))
+        )
+    }
 
     return (
         <div className="w-full flex flex-col min-h-dvh">
@@ -109,12 +151,18 @@ export default function Club() {
                             <div className="w-full flex flex-wrap justify-center md:justify-between mt-4 md:mb-4">
                                 <div className="flex gap-3 justify-end shrink-0">
                                     <button
-                                        className="flex items-center gap-2 rounded-2xl shadow-2xl bg-black text-white border border-neutral-100 p-3 md:px-4 md:py-0 cursor-pointer">
+                                        onClick={onFoldAllButtonClicked}
+                                        className={clsx("flex items-center gap-2 rounded-2xl shadow-2xl p-3 md:px-4 md:py-0 cursor-pointer",
+                                            foldAll ? "bg-black text-white border border-white" : "bg-white text-black border border-neutral-100"
+                                        )}>
                                         <AiFillAppstore className="w-6 h-full" />
-                                        <span>토글</span>
+                                        <span>모두 접기</span>
                                     </button>
                                     <button
-                                        className="flex items-center gap-2 rounded-2xl shadow-2xl border border-neutral-100 px-4 text-neutral-400 cursor-pointer">
+                                        onClick={onExpandAllButtonClicked}
+                                        className={clsx("flex items-center gap-2 rounded-2xl shadow-2xl px-4 cursor-pointer",
+                                            expandAll ? "bg-black text-white border border-white" : "bg-white text-black border border-neutral-100"
+                                        )}>
                                         <TbInfinity className="w-6 h-full" />
                                         <span>모두 펼치기</span>
                                     </button>
@@ -159,9 +207,9 @@ export default function Club() {
                         {
                             isFiltering
                                 ? filterTournament.map(club => (
-                                    <ClubCard club={club} onSelectTeam={onSelectTeam} />
+                                    <ClubCard club={club} isFold={!!club.isFold} onFold={onFold(club.name)} onSelectTeam={onSelectTeam} />
                                 )) : tournament.map(club => (
-                                    <ClubCard club={club} onSelectTeam={onSelectTeam} />
+                                    <ClubCard club={club} isFold={!!club.isFold} onFold={onFold(club.name)} onSelectTeam={onSelectTeam} />
                                 ))
                         }
 
