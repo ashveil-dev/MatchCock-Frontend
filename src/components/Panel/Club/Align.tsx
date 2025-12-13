@@ -1,16 +1,15 @@
-import useTournamentStore from "@stores/useTournamentStore";
 import { motion, AnimatePresence } from "motion/react";
 import { useCallback, useState, type ChangeEvent, type FormEvent } from "react";
 
 interface IProps {
     isOpen: boolean,
-    setAlignOption : (_alignOption : AlignOptionType) => void
+    setAlignOption: (_alignOption: AlignOptionType) => void
     onClose: () => void
 }
 
 export type AlignOptionType = {
-    name : string,
-    total : string,
+    name: string,
+    total: string,
 }
 
 function AlignPanel({
@@ -30,17 +29,13 @@ function AlignPanel({
         setTotalOrder(e.currentTarget.value)
     }
 
-    const onSelectOrderChange = (e: ChangeEvent<HTMLSelectElement>) => {
-        setSelectOrder(e.currentTarget.value)
-    }
-
     const onReset = () => {
         setNameOrder("");
         setTotalOrder("");
         setSelectOrder("");
         setAlignOption({
-            name : "",
-            total : "",
+            name: "",
+            total: "",
         })
     }
 

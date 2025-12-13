@@ -37,7 +37,7 @@ const useTournamentStore = create<State & Action>((set) => ({
     // stateFilter: [],
     // dateFilter: {},
     // order: {},
-    tournamentId: "",
+    tournamentId: null,
     // clubOrder: {},
     // setType: (_type) => set(() => ({ type: _type })),
     // setPageNumber: (_pageNumber) => set(() => ({ pageNumber: _pageNumber })),

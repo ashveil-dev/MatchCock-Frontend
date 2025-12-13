@@ -13,9 +13,11 @@ import AlignPanel, { type AlignOptionType } from "@components/Panel/Club/Align";
 import FilterPanel from "@components/Panel/Club/Filter";
 import type { FilterOptionType } from "@components/Panel/Club/Filter"
 import clsx from "clsx";
+import { useNavigate } from "react-router";
 
 export default function Club() {
     const { tournamentId } = useTournamentStore();
+    const navigate = useNavigate();
     const [alignOption, setAlignOption] = useState<AlignOptionType>({
         name: "",
         total: "",
@@ -80,7 +82,15 @@ export default function Club() {
         , [data, tournament, isFiltering, isSorting,
             filterOption.selected, filterOption.unSelected, filterOption.age, filterOption.group, filterOption.matchName,
             alignOption.name, alignOption.total
-        ])
+        ]
+    )
+
+    useEffect(() => {
+        if (tournamentId === null) {
+            alert("대회가 선택되지 않았습니다.")
+            navigate("/MatchCock/Tournament")
+        }
+    }, [tournamentId])
 
     useEffect(() => {
         if (isLoading || isFetching || data === undefined || data.data === undefined || data.data?.tournament === undefined) {
@@ -215,7 +225,7 @@ export default function Club() {
                                                 </button>
                                             </form>
                                         </div>
-                                        <AlignPanel setAlignOption={setAlignOption}
+                                        <AlignPanel setAlignOption={setAlignOption} 
                                             isOpen={isAlignPanelOpen} onClose={() => setIsAlignPanelOpen(false)} />
                                         <FilterPanel filterOption={filterOption} setFilterOption={setFilterOption}
                                             isOpen={isFilterPanelOpen} onClose={() => setIsFilterPanelOpen(false)} />
